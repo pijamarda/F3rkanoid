@@ -13,7 +13,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 
 	ballVelocity = velocidad_inicial;//vector_velocidades[0];
 
-	velocidadBola = sf::Vector2f(ballVelocity, ballVelocity);
+	//velocidadBola = sf::Vector2f(ballVelocity, ballVelocity);
 	
 	MAX_WIDTH = lvl_width;
 	MAX_HEIGHT = lvl_height;
