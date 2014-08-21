@@ -23,7 +23,7 @@ public:
 	sf::VertexArray direcLine;
 	unsigned int bolaAncho;
 	unsigned int bolaAlto;
-	unsigned int anguloBola;
+	int anguloBola;
 
 
 	Bola(unsigned int lvl_width, unsigned int lvl_height, std::vector<float> vector_velocidades);

@@ -39,8 +39,8 @@ int main()
 	const unsigned int LVL_WIDTH = MAX_WIDTH - PARED_WIDTH;
 	const unsigned int LVL_HEIGHT = MAX_HEIGHT - PARED_HEIGHT;
 
-	const float VELOCIDAD_NAVE_INICIAL = 100;
-	const double VELOCIDAD_BOLA_INICIAL = 100;
+	const float VELOCIDAD_NAVE_INICIAL = 200;
+	const double VELOCIDAD_BOLA_INICIAL = 300;
 
 	//definimos las distintas velocidades que puede adquirir la bola
 	const float VEL1 = VELOCIDAD_NAVE_INICIAL,
@@ -61,10 +61,10 @@ int main()
 	sf::Text text_bola;
 	text_bola.setFont(font);
 	text_bola.setString("2000");
-	text_bola.setCharacterSize(24); // in pixels, not points!
+	text_bola.setCharacterSize(18); // in pixels, not points!
 	text_bola.setColor(sf::Color::White);
 	text_bola.setStyle(sf::Text::Bold);
-	text_bola.setPosition(sf::Vector2f(40, 40));
+	text_bola.setPosition(sf::Vector2f(20, 40));
 	
 
 	std::vector<float> vector_velocidades;
@@ -72,7 +72,7 @@ int main()
 	vector_velocidades.push_back(VEL2);
 
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 	sf::Vector2i localMouseCoords;
@@ -117,9 +117,9 @@ int main()
 		float dt = clock.restart().asSeconds();
 		text_fps.setString(std::to_string(1.f/dt));
 		text_bola.setString("Hola");
-		text_bola.setString(std::to_string(bola.ballVelocity) + " s " 
+		text_bola.setString(std::to_string(bola.ballVelocity) + " s \n" 
 							+ std::to_string(bola.velocidadBola.x)
-							+ " " + std::to_string(bola.velocidadBola.y));
+							+ " , " + std::to_string(bola.velocidadBola.y));
 		nave.actualizarPos(dt);
 		//DEBUG: Vamos a intentar utilizar la version que actualiza la posicion de la bola
 		//basada en el angulo

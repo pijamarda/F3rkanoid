@@ -6,7 +6,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 {
 
 	//Angulo inicial de la bola
-	anguloBola = 60;
+	anguloBola = -60;
 
 	//inicializamos el vector que guarda las velocidades de las bolas
 	//no se puede utiilizar el metodo c++11 vector<int> vi = {1,2,3,4}
@@ -28,7 +28,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 
 	direcBola = sf::Vector2f(0.0f, 0.0f);
 	//velocidadBola = sf::Vector2f(ballVelocity, ballVelocity);
-	anguloBola = sprite.getRotation();
+	//anguloBola = sprite.getRotation();
 
 	boundingBox = sprite.getGlobalBounds();
 
