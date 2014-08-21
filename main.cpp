@@ -16,7 +16,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 			{
 				//std::cout << "hay colision total" << std::endl;
 				//mBola.rebote = true;
-				mBola.velocidadBola.y = -mBola.ballVelocity;
+				mBola.anguloBola = 360 - mBola.anguloBola;
 				//DEBUG: Vamos a probar que al golpear la bola contra la nave
 				//la inclinacion respecto al suelo disminuye
 				//mBola.velocidadBola.x = mBola.ballVelocityVector[1];
@@ -28,7 +28,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 int main()
 {
 
-	const bool DEBUG_ACTIVADO = false;
+	const bool DEBUG_ACTIVADO = true;
 
 	const unsigned int MAX_WIDTH = 600;
 	const unsigned int MAX_HEIGHT = 480;
@@ -121,7 +121,10 @@ int main()
 							+ std::to_string(bola.velocidadBola.x)
 							+ " " + std::to_string(bola.velocidadBola.y));
 		nave.actualizarPos(dt);
-		bola.actualizarPos(dt,localMouseCoords);
+		//DEBUG: Vamos a intentar utilizar la version que actualiza la posicion de la bola
+		//basada en el angulo
+		//bola.actualizarPos(dt,localMouseCoords);
+		bola.actualizarPosAngulo(dt);
 		testCollision(bola, nave);
 		//
 		window.clear();
