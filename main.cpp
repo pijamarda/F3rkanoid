@@ -7,21 +7,17 @@
 
 void testCollision(Bola &mBola, Nave &mNave)
 {
-
-	if (mBola.right() >= mNave.left() && mBola.right() <= mNave.right())
+	//El primer && del if comprueba si la parte derecha de la bola esta dentro de la nave
+	//El segundo && comprueba si la parte izquierda de la bola esta dentro de la nave
+	if ( (mBola.right() >= mNave.left() && mBola.right() <= mNave.right()) || 
+		 (mBola.left() >= mNave.left() && mBola.left() <= mNave.right()) )
 	{
-		if (mBola.left() >= mNave.left() && mBola.left() <= mNave.right())
-		{
-			if (mBola.bottom() >= mNave.top() && mBola.bottom() <= mNave.bottom())
-			{
-				//std::cout << "hay colision total" << std::endl;
-				//mBola.rebote = true;
-				mBola.anguloBola = 360 - mBola.anguloBola;
-				//DEBUG: Vamos a probar que al golpear la bola contra la nave
-				//la inclinacion respecto al suelo disminuye
-				//mBola.velocidadBola.x = mBola.ballVelocityVector[1];
-			}
-		}
+		//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
+		//baja de la bola entra en contacto con la parte superior de la nave
+		if (mBola.bottom() >= mNave.top())
+		{			
+			mBola.anguloBola = 360 - mBola.anguloBola;			
+		}		
 	}
 };
 
@@ -41,51 +37,34 @@ int main()
 
 	const float VELOCIDAD_NAVE_INICIAL = 200;
 	const double VELOCIDAD_BOLA_INICIAL = 300;
-
-	//definimos las distintas velocidades que puede adquirir la bola
-	const float VEL1 = VELOCIDAD_NAVE_INICIAL,
-				VEL2 = 0.5f;
+	const int ANGULO_INICIAL = 60;
 
 	sf::Font font;
-	if (!font.loadFromFile("fonts/sansation.ttf"));
+	sf::Text text_net_graph;
+	std::string t_net_graph;
+	sf::Vector2i localMouseCoords;
+	sf::Clock clock;
+	float dt;
+	
+	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
+	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
+	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
+	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT);
+
+	if (!font.loadFromFile("fonts/sansation.ttf"))
 	{
 		std::cout << "error al cargar la fuente" << std::endl;
 	}
-	sf::Text text_fps;
-	text_fps.setFont(font);
-	text_fps.setString("2000");
-	text_fps.setCharacterSize(24); // in pixels, not points!
-	text_fps.setColor(sf::Color::White);
-	text_fps.setStyle(sf::Text::Bold);
-
-	sf::Text text_bola;
-	text_bola.setFont(font);
-	text_bola.setString("2000");
-	text_bola.setCharacterSize(18); // in pixels, not points!
-	text_bola.setColor(sf::Color::White);
-	text_bola.setStyle(sf::Text::Bold);
-	text_bola.setPosition(sf::Vector2f(20, 40));
 	
-
-	std::vector<float> vector_velocidades;
-	vector_velocidades.push_back(VEL1);
-	vector_velocidades.push_back(VEL2);
-
-	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
+	text_net_graph.setFont(font);
+	text_net_graph.setString("2000");
+	text_net_graph.setCharacterSize(18); // in pixels, not points!
+	text_net_graph.setColor(sf::Color::White);
+	text_net_graph.setStyle(sf::Text::Bold);	
+	
 	//window.setFramerateLimit(60);
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
-	sf::Vector2i localMouseCoords;
-
-	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);
-	//DEBUG: Cuando uso el constructor de los vectores no me inicializa bien los graficos
-	//revisar
-	//Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, vector_velocidades);
-	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL);
-	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT);
-
-	sf::Clock clock;
-	//clock.restart().asSeconds();
+		
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -114,26 +93,26 @@ int main()
 
 		//actualizamos direccion nave
 		
-		float dt = clock.restart().asSeconds();
-		text_fps.setString(std::to_string(1.f/dt));
-		text_bola.setString("Hola");
-		text_bola.setString(std::to_string(bola.ballVelocity) + " s \n" 
+		dt = clock.restart().asSeconds();
+		
+		t_net_graph += std::to_string(1.f/dt) + "\n";
+		//text_fps.setString(std::to_string(1.f/dt));
+		t_net_graph += std::to_string(bola.ballVelocity) + "\n";
+		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
+		/*text_bola.setString(std::to_string(bola.ballVelocity) + " s \n" 
 							+ std::to_string(bola.velocidadBola.x)
 							+ " , " + std::to_string(bola.velocidadBola.y));
+		*/
 		nave.actualizarPos(dt);
-		//DEBUG: Vamos a intentar utilizar la version que actualiza la posicion de la bola
-		//basada en el angulo
-		//bola.actualizarPos(dt,localMouseCoords);
-		bola.actualizarPosAngulo(dt);
+		bola.actualizarPos(dt);
 		testCollision(bola, nave);
 		//
 		window.clear();
-		//window.draw(shape);
+		
 		nave.draw(window, DEBUG_ACTIVADO);
 		//ladrillos.draw(window);
-		bola.draw(window, DEBUG_ACTIVADO);
-		window.draw(text_fps);
-		window.draw(text_bola);
+		bola.draw(window, DEBUG_ACTIVADO);		
+		window.draw(text_net_graph);
 		window.display();
 	}
 

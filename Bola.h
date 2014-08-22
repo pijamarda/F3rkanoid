@@ -7,14 +7,11 @@ class Bola
 {
 public:
 
-	double ballVelocity;
-
-	std::vector<float> ballVelocityVector;
+	double ballVelocity;	
 	
 	//Nos indicara el ancho y alto maximo del NIVEL que no de la ventana
 	unsigned int MAX_WIDTH;
-	unsigned int MAX_HEIGHT;
-	sf::Vector2f direcBola;
+	unsigned int MAX_HEIGHT;	
 	sf::Vector2f velocidadBola;
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -26,18 +23,15 @@ public:
 	int anguloBola;
 
 
-	Bola(unsigned int lvl_width, unsigned int lvl_height, std::vector<float> vector_velocidades);
-
 	//Constructor principal, al que le pasamos directamente el ancho y alto que tiene el nivel
 	// y la velocidad de la bola
-	Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial);
+	Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, int angulo_inicial);
 
-	void draw(sf::RenderWindow &window, bool debug);
+	void draw(sf::RenderWindow &window, bool debug);	
 	
-	void actualizarPos(double dt, sf::Vector2i localMouseCoords);
 	//Vamos a utilizar los grados a los que mira la bola para actualizar su posicion
 	//esta actualizacion se va a basar en el angulo
-	void actualizarPosAngulo(double dt);
+	void actualizarPos(double dt);
 	
 	float x();
 	float y();
