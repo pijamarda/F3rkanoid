@@ -6,6 +6,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 {
 
 	//Angulo inicial de la bola
+	ANGULO_INICIAL = angulo_inicial;
 	anguloBola = angulo_inicial;
 
 	
@@ -62,7 +63,7 @@ void Bola::actualizarPos(double dt)
 	//Esto indica que la bola se ha caido por abajo y la volvemos a colocar en el centro
 	if (position.y >= MAX_HEIGHT)
 	{
-		anguloBola = 45;
+		anguloBola = ANGULO_INICIAL;
 		sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
 	}
 	
@@ -81,8 +82,10 @@ void Bola::actualizarPos(double dt)
 	direcLine[0].position = sf::Vector2f(boundingBox.left + boundingBox.width / 2, 
 										 boundingBox.top + boundingBox.height / 2);
 	direcLine[0].color = sf::Color::Red;
-	direcLine[1].position = sf::Vector2f(boundingBox.left + boundingBox.width / 2 + std::cos(anguloBolaRadianes) * 100, 
-							boundingBox.top + boundingBox.height / 2 + std::sin(anguloBolaRadianes) * 100);
+	direcLine[1].position = sf::Vector2f(boundingBox.left + boundingBox.width / 2 + 
+										 std::cos(anguloBolaRadianes) * 50, 
+										 boundingBox.top + boundingBox.height / 2 + 
+										 std::sin(anguloBolaRadianes) * 50);
 	direcLine[1].color = sf::Color::Red;
 
 	boundingBox = sprite.getGlobalBounds();

@@ -13,11 +13,13 @@ void testCollision(Bola &mBola, Nave &mNave)
 		 (mBola.left() >= mNave.left() && mBola.left() <= mNave.right()) )
 	{
 		//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
-		//baja de la bola entra en contacto con la parte superior de la nave
+		//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
 		if (mBola.bottom() >= mNave.top())
 		{			
 			mBola.anguloBola = 360 - mBola.anguloBola;			
-		}		
+		}	
+		//TODO: Ajustar la zona de rebote, sobre todo cuando golpea lateralmente la NAVE
+		//ahora mismo tiene un comportamiento herratico	
 	}
 };
 
@@ -26,18 +28,25 @@ int main()
 
 	const bool DEBUG_ACTIVADO = true;
 
+	//Tamaño de la ventana
 	const unsigned int MAX_WIDTH = 600;
 	const unsigned int MAX_HEIGHT = 480;
 
+	//Tamaño de la pared
 	const unsigned int PARED_WIDTH = 20;
 	const unsigned int PARED_HEIGHT = 20;
 
+	//Tamaño real del nivel donde se desarrollara todo el juego
 	const unsigned int LVL_WIDTH = MAX_WIDTH - PARED_WIDTH;
 	const unsigned int LVL_HEIGHT = MAX_HEIGHT - PARED_HEIGHT;
 
+	//Velocidades iniciales de la nave y la bola
 	const float VELOCIDAD_NAVE_INICIAL = 200;
 	const double VELOCIDAD_BOLA_INICIAL = 300;
-	const int ANGULO_INICIAL = 60;
+
+	//Angulo inicial hacia donde sale la bola
+	const int ANGULO_INICIAL = 15;
+
 
 	sf::Font font;
 	sf::Text text_net_graph;
@@ -45,7 +54,7 @@ int main()
 	sf::Vector2i localMouseCoords;
 	sf::Clock clock;
 	float dt;
-	
+
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
@@ -57,14 +66,13 @@ int main()
 	}
 	
 	text_net_graph.setFont(font);
-	text_net_graph.setString("2000");
+	text_net_graph.setString("NET GRAPH");
 	text_net_graph.setCharacterSize(18); // in pixels, not points!
 	text_net_graph.setColor(sf::Color::White);
 	text_net_graph.setStyle(sf::Text::Bold);	
 	
 	//window.setFramerateLimit(60);
 		
-	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -94,15 +102,16 @@ int main()
 		//actualizamos direccion nave
 		
 		dt = clock.restart().asSeconds();
-		
-		t_net_graph += std::to_string(1.f/dt) + "\n";
+		t_net_graph = "";
+		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";
 		//text_fps.setString(std::to_string(1.f/dt));
-		t_net_graph += std::to_string(bola.ballVelocity) + "\n";
+		t_net_graph += "angulo: " + std::to_string(bola.anguloBola) + "\n";
 		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
 		/*text_bola.setString(std::to_string(bola.ballVelocity) + " s \n" 
 							+ std::to_string(bola.velocidadBola.x)
 							+ " , " + std::to_string(bola.velocidadBola.y));
 		*/
+		text_net_graph.setString(t_net_graph);
 		nave.actualizarPos(dt);
 		bola.actualizarPos(dt);
 		testCollision(bola, nave);

@@ -21,6 +21,7 @@ public:
 	unsigned int bolaAncho;
 	unsigned int bolaAlto;
 	int anguloBola;
+	int ANGULO_INICIAL;
 
 
 	//Constructor principal, al que le pasamos directamente el ancho y alto que tiene el nivel
