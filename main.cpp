@@ -16,7 +16,9 @@ void testCollision(Bola &mBola, Nave &mNave)
 		//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
 		if (mBola.bottom() >= mNave.top())
 		{			
-			mBola.anguloBola = 360 - mBola.anguloBola;			
+			
+			mBola.anguloBola = 360 - mBola.anguloBola;	
+			
 		}	
 		//TODO: Ajustar la zona de rebote, sobre todo cuando golpea lateralmente la NAVE
 		//ahora mismo tiene un comportamiento herratico	
@@ -42,10 +44,10 @@ int main()
 
 	//Velocidades iniciales de la nave y la bola
 	const float VELOCIDAD_NAVE_INICIAL = 200;
-	const double VELOCIDAD_BOLA_INICIAL = 300;
+	const double VELOCIDAD_BOLA_INICIAL = 100;
 
 	//Angulo inicial hacia donde sale la bola
-	const int ANGULO_INICIAL = 15;
+	const int ANGULO_INICIAL = 45;
 
 
 	sf::Font font;

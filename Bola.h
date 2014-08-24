@@ -40,5 +40,6 @@ public:
 	float right();
 	float top();
 	float bottom();
+	int positivaAngulo(int angulo);
 
 };

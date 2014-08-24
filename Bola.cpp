@@ -54,18 +54,30 @@ void Bola::actualizarPos(double dt)
 {
 	sf::Vector2f position = sprite.getPosition();	
 	
-	if (position.x <= 0)
-		anguloBola = - (anguloBola - 180);
+	if (position.x <= 0 + 20)
+	{
+		anguloBola = -(anguloBola - 180);
+		
+	}
 	if (position.x >= MAX_WIDTH)
+	{
 		anguloBola = 180 - anguloBola;
-	if (position.y <= 0)
-		anguloBola = - anguloBola;
+		
+	}
+	if (position.y <= 0 + 20)
+	{
+		anguloBola = 360-anguloBola;
+		
+	}
 	//Esto indica que la bola se ha caido por abajo y la volvemos a colocar en el centro
 	if (position.y >= MAX_HEIGHT)
 	{
-		anguloBola = ANGULO_INICIAL;
-		sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
+		//anguloBola = ANGULO_INICIAL;
+		//sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
+		anguloBola = 360 - anguloBola;
+		
 	}
+
 	
 
 	//Aqui debemos introducir el calculo del seno y coseno
@@ -76,7 +88,13 @@ void Bola::actualizarPos(double dt)
 	//Ahora calculamos cuanto se ha desplazado en el eje de las Y utilizando el Seno
 	velocidadBola.y = ballVelocity * std::sin(anguloBolaRadianes) * dt;
 
-	sprite.move(velocidadBola);
+	if ( this->left() + velocidadBola.x >= 0 || 
+		this->right() + velocidadBola.x <= MAX_WIDTH ||
+		this->top() + velocidadBola.y >= 0 ||
+		this->bottom() +velocidadBola.y <= MAX_HEIGHT)
+	{
+		sprite.move(velocidadBola);
+	}
 
 	//direcLine.clear();
 	direcLine[0].position = sf::Vector2f(boundingBox.left + boundingBox.width / 2, 
@@ -100,3 +118,7 @@ float Bola::right() { return sprite.getGlobalBounds().left + sprite.getGlobalBou
 float Bola::top() { return sprite.getGlobalBounds().top; }
 float Bola::bottom() { return sprite.getGlobalBounds().top + sprite.getGlobalBounds().height; }
 
+int Bola::positivaAngulo(int angulo)
+{
+	return 360 + angulo;
+}
