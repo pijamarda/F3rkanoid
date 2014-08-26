@@ -9,7 +9,7 @@ Nave::Nave(unsigned int lvl_width, unsigned int lvl_height, float velocidad_nave
 	MAX_HEIGHT = lvl_height;
 	if (!texture.loadFromFile("img/png/paddleBlu.png"))
 	{
-		// error...
+		std::cout << "Ha habido un error en la carga de la textura de la Nave" << std::endl;
 	}
 
 	dNave = direccion::parado;
@@ -53,6 +53,8 @@ void Nave::actualizarPos(double dt, sf::Vector2i mouseCoords)
 	}
 	else dNave = direccion::parado;
 
+	//Vamos a utilizar las coordenadas del raton para mover la nave
+	// se ha hecho deprisa y corriendo quizas haya algun fallo extra
 	float coordenadaX = mouseCoords.x;
 	if (coordenadaX > MAX_WIDTH - naveAncho)
 		coordenadaX = MAX_WIDTH - naveAncho;
@@ -60,8 +62,9 @@ void Nave::actualizarPos(double dt, sf::Vector2i mouseCoords)
 
 	boundingBox = sprite.getGlobalBounds();
 	rectBox.setPosition(sf::Vector2f(boundingBox.left, boundingBox.top));
-
 }
+
+
 float Nave::x() { return sprite.getPosition().x; }
 float Nave::y() { return sprite.getPosition().y; }
 float Nave::left() { return sprite.getGlobalBounds().left; }

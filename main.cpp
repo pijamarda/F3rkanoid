@@ -16,8 +16,34 @@ void testCollision(Bola &mBola, Nave &mNave)
 		//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
 		if (mBola.bottom() >= mNave.top())
 		{			
-			
-			mBola.anguloBola = 360 - mBola.anguloBola;	
+
+			mBola.anguloBola = 360 - mBola.anguloBola;
+			/*
+			*	Vamos a intentar que el angulo de salida de rebote dependa de en que parte de la nave 
+			*	colisiona.
+			*	
+			*/
+			//Primero calculamos la coordenada del centro de la bola
+			float centroBolaX = (mBola.right() + mBola.left()) / 2;
+			//Calculamos la coordenada actual del centro de la nave
+			float centroNaveX = (mNave.right() + mNave.left()) / 2;
+			//Ahora vamos a hacer la comparacion de donde rebota la bola respecto a la nave
+			// Dividimos la nave en varias zonas de choque, en principio 5
+			int numeroZonas = 5;
+			float tamZonaChoque = (mNave.right() - mNave.left()) / numeroZonas;
+			//Estas zonas nos daran un rango de x para comparar
+			//por ahora solo voy a sacar por consola la zona de la nave donde choca
+			if (centroBolaX < mNave.left() + tamZonaChoque)
+				std::cout << "Zona 1" << std::endl;
+			else if (centroBolaX < mNave.left() + tamZonaChoque*2)
+				std::cout << "Zona 2" << std::endl;
+			else if (centroBolaX < mNave.left() + tamZonaChoque*3)
+				std::cout << "Zona 3" << std::endl;
+			else if (centroBolaX < mNave.left() + tamZonaChoque*4)
+				std::cout << "Zona 4" << std::endl;
+			else if (centroBolaX < mNave.left() + tamZonaChoque*5)
+				std::cout << "Zona 5" << std::endl;
+				
 			
 		}	
 		//TODO: Ajustar la zona de rebote, sobre todo cuando golpea lateralmente la NAVE
@@ -47,7 +73,7 @@ int main()
 
 	//Velocidades iniciales de la nave y la bola
 	const float VELOCIDAD_NAVE_INICIAL = 200;
-	const double VELOCIDAD_BOLA_INICIAL = 600;
+	const double VELOCIDAD_BOLA_INICIAL = 400;
 
 	//Angulo inicial hacia donde sale la bola
 	const int ANGULO_INICIAL = 45;
