@@ -1,5 +1,5 @@
 #include "Nave.h"
-	
+
 
 Nave::Nave(unsigned int lvl_width, unsigned int lvl_height, float velocidad_nave_ini)
 {
@@ -39,7 +39,7 @@ void Nave::draw(sf::RenderWindow &window, bool debug)
 		window.draw(rectBox);
 }
 
-void Nave::actualizarPos(double dt)
+void Nave::actualizarPos(double dt, sf::Vector2i mouseCoords)
 {
 	sf::Vector2f position = sprite.getPosition();
 
@@ -53,8 +53,12 @@ void Nave::actualizarPos(double dt)
 	}
 	else dNave = direccion::parado;
 
-	boundingBox = sprite.getGlobalBounds();
+	float coordenadaX = mouseCoords.x;
+	if (coordenadaX > MAX_WIDTH - naveAncho)
+		coordenadaX = MAX_WIDTH - naveAncho;
+	sprite.setPosition(sf::Vector2f(coordenadaX,this->y()));
 
+	boundingBox = sprite.getGlobalBounds();
 	rectBox.setPosition(sf::Vector2f(boundingBox.left, boundingBox.top));
 
 }

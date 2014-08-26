@@ -22,11 +22,13 @@ public:
 	sf::RectangleShape rectBox;
 	unsigned int naveAncho;
 	unsigned int naveAlto;
+	//Aqui guardaremos las coordenadas locales del raton
+	sf::Vector2i mouseCoords;
 
 	Nave(unsigned int lvl_width, unsigned int lvl_height, float velocidad_nave_ini);
 
 	void draw(sf::RenderWindow &window, bool debug);
-	void actualizarPos(double dt);
+	void actualizarPos(double dt, sf::Vector2i mouseCoords);
 	float x();
 	float y();
 	float left();

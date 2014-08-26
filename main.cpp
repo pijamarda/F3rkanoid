@@ -28,6 +28,9 @@ void testCollision(Bola &mBola, Nave &mNave)
 int main()
 {
 
+	//Con el modo debug activado, vemos lo siguiente:
+	// Los bordes de colision de los elementos, nave, bola
+	// el net_graph indicando FPS, angulo de la bola normalizado y offset de desplazamiento
 	const bool DEBUG_ACTIVADO = true;
 
 	//Tamaño de la ventana
@@ -44,7 +47,7 @@ int main()
 
 	//Velocidades iniciales de la nave y la bola
 	const float VELOCIDAD_NAVE_INICIAL = 200;
-	const double VELOCIDAD_BOLA_INICIAL = 100;
+	const double VELOCIDAD_BOLA_INICIAL = 600;
 
 	//Angulo inicial hacia donde sale la bola
 	const int ANGULO_INICIAL = 45;
@@ -105,16 +108,12 @@ int main()
 		
 		dt = clock.restart().asSeconds();
 		t_net_graph = "";
-		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";
-		//text_fps.setString(std::to_string(1.f/dt));
-		t_net_graph += "angulo: " + std::to_string(bola.anguloBola) + "\n";
+		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";		
+		t_net_graph += "angulo: " + std::to_string(bola.anguloBola % 360) + "\n";
 		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
-		/*text_bola.setString(std::to_string(bola.ballVelocity) + " s \n" 
-							+ std::to_string(bola.velocidadBola.x)
-							+ " , " + std::to_string(bola.velocidadBola.y));
-		*/
+		
 		text_net_graph.setString(t_net_graph);
-		nave.actualizarPos(dt);
+		nave.actualizarPos(dt, localMouseCoords);
 		bola.actualizarPos(dt);
 		testCollision(bola, nave);
 		//
