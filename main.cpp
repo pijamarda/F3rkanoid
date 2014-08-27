@@ -18,6 +18,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 		{			
 
 			mBola.anguloBola = 360 - mBola.anguloBola;
+			mBola.anguloBola = mBola.normalizaAngulo(mBola.anguloBola);
 			/*
 			*	Vamos a intentar que el angulo de salida de rebote dependa de en que parte de la nave 
 			*	colisiona.

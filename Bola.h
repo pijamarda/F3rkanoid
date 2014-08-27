@@ -40,6 +40,10 @@ public:
 	float right();
 	float top();
 	float bottom();
-	int positivaAngulo(int angulo);
+
+	//Esta funcion pretende convertir cualquier angulo, obtenido de las operaciones de rebote de la bola,
+	//en un angulo normalizado, es decir que el angulo no sea negativo ni mayor de 360
+	// --> 0 < angulo < 360  <--
+	int normalizaAngulo(int angulo);
 
 };

@@ -57,16 +57,19 @@ void Bola::actualizarPos(double dt)
 	if (position.x <= 0 + 20)
 	{
 		anguloBola = -(anguloBola - 180);
+		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
 	if (position.x >= MAX_WIDTH)
 	{
 		anguloBola = 180 - anguloBola;
+		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
 	if (position.y <= 0 + 20)
 	{
 		anguloBola = 360-anguloBola;
+		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
 	//Esto indica que la bola se ha caido por abajo y la volvemos a colocar en el centro
@@ -75,9 +78,8 @@ void Bola::actualizarPos(double dt)
 		//anguloBola = ANGULO_INICIAL;
 		//sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
 		anguloBola = 360 - anguloBola;
-		
+		anguloBola = normalizaAngulo(anguloBola);		
 	}
-
 	
 
 	//Aqui debemos introducir el calculo del seno y coseno
@@ -118,7 +120,13 @@ float Bola::right() { return sprite.getGlobalBounds().left + sprite.getGlobalBou
 float Bola::top() { return sprite.getGlobalBounds().top; }
 float Bola::bottom() { return sprite.getGlobalBounds().top + sprite.getGlobalBounds().height; }
 
-int Bola::positivaAngulo(int angulo)
+int Bola::normalizaAngulo(int angulo)
 {
-	return 360 + angulo;
+	int angTemp = angulo;
+	if (angulo > 360)
+		angTemp = angulo % 360;
+	if (angTemp < 0)
+		angTemp = angTemp + 360;
+
+	return angTemp;
 }
