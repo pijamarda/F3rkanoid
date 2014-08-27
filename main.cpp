@@ -17,8 +17,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 		if (mBola.bottom() >= mNave.top())
 		{			
 
-			mBola.anguloBola = 360 - mBola.anguloBola;
-			mBola.anguloBola = mBola.normalizaAngulo(mBola.anguloBola);
+			
 			/*
 			*	Vamos a intentar que el angulo de salida de rebote dependa de en que parte de la nave 
 			*	colisiona.
@@ -34,6 +33,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 			float tamZonaChoque = (mNave.right() - mNave.left()) / numeroZonas;
 			//Estas zonas nos daran un rango de x para comparar
 			//por ahora solo voy a sacar por consola la zona de la nave donde choca
+			/*
 			if (centroBolaX < mNave.left() + tamZonaChoque)
 				std::cout << "Zona 1" << std::endl;
 			else if (centroBolaX < mNave.left() + tamZonaChoque*2)
@@ -44,6 +44,44 @@ void testCollision(Bola &mBola, Nave &mNave)
 				std::cout << "Zona 4" << std::endl;
 			else if (centroBolaX < mNave.left() + tamZonaChoque*5)
 				std::cout << "Zona 5" << std::endl;
+			*/
+
+			//Formula el calculo del angulo de salida del rebote segun donde impacte
+			/*
+			*	PRIMERA APROXIMACION SI LA BOLA VIENE CON UN ANGULO > 0 Y <90 (de izquierda a derecha)
+			*	La idea es la siguiente, si rebota en el extremo izquierdo de la pala la bola debe
+			*	volver por donde ha venido, esto es angulo de entrada + 180
+			*	Si rebota en medio la bola sale con un angulo igual pero rebotando ANG + 180 + 90
+			*	Si rebota en el extremo derecho sale rebotando ANG + 180 + 180
+			*
+			*	De manera que dividimos la anchura de la nave en 180 zonas de impacto, que son los angulos
+			*	de salida que va a tomar la bola
+			*/
+
+			if (mBola.anguloBola > 0 && mBola.anguloBola < 90)
+			{
+				float diferencial = 180.0f / mNave.naveAncho;
+				//en nuestro caso particular da alrededor de 0'73
+
+				//ahora calculamos la zona de impacto de la bola en la nave respecto al centro
+				//de la bola, es decir restamos el centro de la bola menos la coordenada x de la nave
+				//eso nos da la zona de impacto entre 0 y la anchura
+				float impactoBola = centroBolaX - mNave.left();
+
+				//el angulo de salida sera la zona de impacto sobre la nave por el diferencial calculado antes
+				//y despues sumamos 180 porque corresponde a un rebote con direccion de izquierda a derecha
+				float anguloDeSalida = impactoBola*diferencial + 180;
+
+				//DEBUG: Mostramos por consola
+				std::cout << "entrada: " << mBola.anguloBola << std::endl;
+				std::cout << "encho nave: " << mNave.naveAncho << " ";
+				std::cout << "diferencial " << diferencial << " impactoBola: " << impactoBola << std::endl;
+				std::cout << "salida: " << anguloDeSalida << std::endl;
+				//std::cout << "salida norm: " << mBola.normalizaAngulo(anguloDeSalida) << std::endl;
+			}
+
+			mBola.anguloBola = 360 - mBola.anguloBola;
+			mBola.anguloBola = mBola.normalizaAngulo(mBola.anguloBola);
 				
 			
 		}	
