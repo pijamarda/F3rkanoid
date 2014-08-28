@@ -33,6 +33,7 @@ public:
 	//Vamos a utilizar los grados a los que mira la bola para actualizar su posicion
 	//esta actualizacion se va a basar en el angulo
 	void actualizarPos(double dt);
+	void resetPosition();
 	
 	float x();
 	float y();

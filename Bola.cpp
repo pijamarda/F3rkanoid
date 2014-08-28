@@ -138,3 +138,9 @@ float Bola::normalizaAngulo(float angulo)
 
 	return angTemp;
 }
+
+void Bola::resetPosition()
+{
+	sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));	
+	anguloBola = ANGULO_INICIAL;
+}

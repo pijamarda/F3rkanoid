@@ -60,36 +60,39 @@ void testCollision(Bola &mBola, Nave &mNave)
 
 			float anguloDeSalida = mBola.anguloBola;
 
-			if (mBola.anguloBola > 0 && mBola.anguloBola < 90)
+			if (mBola.anguloBola > 0 && mBola.anguloBola <= 180)
 			{
 				float diferencial = 180.0f / mNave.naveAncho;
 				//en nuestro caso particular da alrededor de 0'73
-
-				//ahora calculamos la zona de impacto de la bola en la nave respecto al centro
+				float centroNaveX = (mNave.right() + mNave.left()) / 2;
+				//ahora calculamos la diferencia de la bola en e nave respecto al centro
 				//de la bola, es decir restamos el centro de la bola menos la coordenada x de la nave
 				//eso nos da la zona de impacto entre 0 y la anchura
-				float impactoBola = centroBolaX - mNave.left();
+				float impactoBola = centroBolaX - centroNaveX;
 
 				//el angulo de salida sera la zona de impacto sobre la nave por el diferencial calculado antes
 				//y despues sumamos 180 porque corresponde a un rebote con direccion de izquierda a derecha
-				anguloDeSalida = impactoBola*diferencial + 180;
+
+				if (anguloDeSalida >= 0 && anguloDeSalida <= 90)
+					if (anguloDeSalida >= 30 || impactoBola < 0)
+						anguloDeSalida = -anguloDeSalida + impactoBola*diferencial;
+					else
+						anguloDeSalida = -anguloDeSalida;
+				if (anguloDeSalida > 90 && anguloDeSalida <= 180)
+					if (anguloDeSalida <= 150 || impactoBola > 0)
+						anguloDeSalida = -anguloDeSalida + impactoBola*diferencial;
+					else
+						anguloDeSalida = -anguloDeSalida;
 
 				//DEBUG: Mostramos por consola
 				std::cout << "entrada: " << mBola.anguloBola << std::endl;
 				std::cout << "encho nave: " << mNave.naveAncho << " ";
-				std::cout << "diferencial " << diferencial << " impactoBola: " << impactoBola << std::endl;
+				std::cout << "impactoBola: " << impactoBola << std::endl;
 				std::cout << "salida: " << anguloDeSalida << std::endl;
 				//std::cout << "salida norm: " << mBola.normalizaAngulo(anguloDeSalida) << std::endl;
-			}
-			else if (mBola.anguloBola > 90 && mBola.anguloBola < 180)
-			{
-				//PAra el casi de que la bola venga de derecha a izquierda hacemos lo mismo
-				float diferencial = 180.0f / mNave.naveAncho;
-				float impactoBola = centroBolaX - mNave.left();
-				anguloDeSalida = impactoBola*diferencial + 180;
-			}
+			}			
 
-			mBola.anguloBola = anguloDeSalida;//360 - mBola.anguloBola;
+			//mBola.anguloBola = anguloDeSalida;//360 - mBola.anguloBola;
 			mBola.anguloBola = mBola.normalizaAngulo(anguloDeSalida);
 				
 			
@@ -159,8 +162,11 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			{
+				bola.resetPosition();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				// left key is pressed: move our character
 				if (nave.dNave == direccion::parado)
@@ -168,18 +174,18 @@ int main()
 				else if (nave.dNave == direccion::derecha)
 					nave.dNave = direccion::parado;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
 				if (nave.dNave == direccion::parado)
 					nave.dNave = direccion::derecha;
 				else if (nave.dNave == direccion::izquierda)
 					nave.dNave = direccion::parado;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
 				bola.ballVelocity -= 15;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
 				bola.ballVelocity += 15;
 			}
