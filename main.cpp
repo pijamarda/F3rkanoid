@@ -58,6 +58,8 @@ void testCollision(Bola &mBola, Nave &mNave)
 			*	de salida que va a tomar la bola
 			*/
 
+			float anguloDeSalida = mBola.anguloBola;
+
 			if (mBola.anguloBola > 0 && mBola.anguloBola < 90)
 			{
 				float diferencial = 180.0f / mNave.naveAncho;
@@ -70,7 +72,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 
 				//el angulo de salida sera la zona de impacto sobre la nave por el diferencial calculado antes
 				//y despues sumamos 180 porque corresponde a un rebote con direccion de izquierda a derecha
-				float anguloDeSalida = impactoBola*diferencial + 180;
+				anguloDeSalida = impactoBola*diferencial + 180;
 
 				//DEBUG: Mostramos por consola
 				std::cout << "entrada: " << mBola.anguloBola << std::endl;
@@ -79,9 +81,16 @@ void testCollision(Bola &mBola, Nave &mNave)
 				std::cout << "salida: " << anguloDeSalida << std::endl;
 				//std::cout << "salida norm: " << mBola.normalizaAngulo(anguloDeSalida) << std::endl;
 			}
+			else if (mBola.anguloBola > 90 && mBola.anguloBola < 180)
+			{
+				//PAra el casi de que la bola venga de derecha a izquierda hacemos lo mismo
+				float diferencial = 180.0f / mNave.naveAncho;
+				float impactoBola = centroBolaX - mNave.left();
+				anguloDeSalida = impactoBola*diferencial + 180;
+			}
 
-			mBola.anguloBola = 360 - mBola.anguloBola;
-			mBola.anguloBola = mBola.normalizaAngulo(mBola.anguloBola);
+			mBola.anguloBola = anguloDeSalida;//360 - mBola.anguloBola;
+			mBola.anguloBola = mBola.normalizaAngulo(anguloDeSalida);
 				
 			
 		}	
@@ -115,7 +124,7 @@ int main()
 	const double VELOCIDAD_BOLA_INICIAL = 400;
 
 	//Angulo inicial hacia donde sale la bola
-	const int ANGULO_INICIAL = 45;
+	const float ANGULO_INICIAL = 45;
 
 
 	sf::Font font;
@@ -166,6 +175,14 @@ int main()
 				else if (nave.dNave == direccion::izquierda)
 					nave.dNave = direccion::parado;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+			{
+				bola.ballVelocity -= 15;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				bola.ballVelocity += 15;
+			}
 			localMouseCoords = sf::Mouse::getPosition(window);
 		}
 
@@ -174,7 +191,7 @@ int main()
 		dt = clock.restart().asSeconds();
 		t_net_graph = "";
 		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";		
-		t_net_graph += "angulo: " + std::to_string(bola.anguloBola % 360) + "\n";
+		t_net_graph += "angulo: " + std::to_string(bola.anguloBola) + "\n";
 		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
 		
 		text_net_graph.setString(t_net_graph);

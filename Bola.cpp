@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, int angulo_inicial)
+Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, float angulo_inicial)
 {
 
 	//Angulo inicial de la bola
@@ -53,31 +53,39 @@ void Bola::draw(sf::RenderWindow &window, bool debug)
 void Bola::actualizarPos(double dt)
 {
 	sf::Vector2f position = sprite.getPosition();	
-	
+	anguloBola = normalizaAngulo(anguloBola);
 	if (position.x <= 0 + 20)
 	{
-		anguloBola = -(anguloBola - 180);
+		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia la izquierda
+		if (anguloBola > 90 || anguloBola <= 270)
+			anguloBola = -(anguloBola - 180);
 		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
-	if (position.x >= MAX_WIDTH)
+	else if (position.x >= MAX_WIDTH)
 	{
-		anguloBola = 180 - anguloBola;
+		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia la derecha
+		if (anguloBola > 270 || anguloBola < 90)
+			anguloBola = 180 - anguloBola;
 		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
-	if (position.y <= 0 + 20)
+	else if (position.y <= 0 + 20)
 	{
-		anguloBola = 360-anguloBola;
+		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia arriba
+		if (anguloBola > 180)
+			anguloBola = 360-anguloBola;
 		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
 	//Esto indica que la bola se ha caido por abajo y la volvemos a colocar en el centro
-	if (position.y >= MAX_HEIGHT)
+	else if (position.y >= MAX_HEIGHT)
 	{
 		//anguloBola = ANGULO_INICIAL;
 		//sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
-		anguloBola = 360 - anguloBola;
+		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia abajo
+		if (anguloBola < 180)
+			anguloBola = 360 - anguloBola;
 		anguloBola = normalizaAngulo(anguloBola);		
 	}
 	
@@ -120,11 +128,11 @@ float Bola::right() { return sprite.getGlobalBounds().left + sprite.getGlobalBou
 float Bola::top() { return sprite.getGlobalBounds().top; }
 float Bola::bottom() { return sprite.getGlobalBounds().top + sprite.getGlobalBounds().height; }
 
-int Bola::normalizaAngulo(int angulo)
+float Bola::normalizaAngulo(float angulo)
 {
-	int angTemp = angulo;
+	float angTemp = angulo;
 	if (angulo > 360)
-		angTemp = angulo % 360;
+		angTemp = std::fmod(angulo,360);
 	if (angTemp < 0)
 		angTemp = angTemp + 360;
 

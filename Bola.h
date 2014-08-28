@@ -20,13 +20,13 @@ public:
 	sf::VertexArray direcLine;
 	unsigned int bolaAncho;
 	unsigned int bolaAlto;
-	int anguloBola;
-	int ANGULO_INICIAL;
+	float anguloBola;
+	float ANGULO_INICIAL;
 
 
 	//Constructor principal, al que le pasamos directamente el ancho y alto que tiene el nivel
 	// y la velocidad de la bola
-	Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, int angulo_inicial);
+	Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, float angulo_inicial);
 
 	void draw(sf::RenderWindow &window, bool debug);	
 	
@@ -44,6 +44,6 @@ public:
 	//Esta funcion pretende convertir cualquier angulo, obtenido de las operaciones de rebote de la bola,
 	//en un angulo normalizado, es decir que el angulo no sea negativo ni mayor de 360
 	// --> 0 < angulo < 360  <--
-	int normalizaAngulo(int angulo);
+	float normalizaAngulo(float angulo);
 
 };
