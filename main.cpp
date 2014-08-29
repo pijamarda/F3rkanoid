@@ -102,6 +102,34 @@ void testCollision(Bola &mBola, Nave &mNave)
 	}
 };
 
+void bolaBrickCollision(Bola &mBola, Brick &mbrick)
+{
+	//El primer && del if comprueba si la parte derecha de la bola esta dentro de la nave
+	//El segundo && comprueba si la parte izquierda de la bola esta dentro de la nave
+	for (auto &ladrillo : mbrick.ladrillos)
+	{
+		if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
+			(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
+		{
+			
+			//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
+			//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
+			if ((mBola.bottom() >= ladrillo.top() && mBola.bottom() <= ladrillo.bottom()) ||
+				(mBola.top() <= ladrillo.bottom() && mBola.top() >= ladrillo.top()))
+			{	
+				std::cout << "hay col dato" << std::endl;
+				//ladrillo.sprite.setColor(sf::Color::Black);
+				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
+				//TODO: Esto solo cambioa hacia abajo o arriba la bola
+				//hay que hacer la colision lateral
+				mBola.anguloBola = mBola.normalizaAngulo(-mBola.anguloBola);
+
+			}
+		}
+		
+	}
+};
+
 int main()
 {
 
@@ -204,11 +232,12 @@ int main()
 		nave.actualizarPos(dt, localMouseCoords);
 		bola.actualizarPos(dt);
 		testCollision(bola, nave);
+		bolaBrickCollision(bola, ladrillos);
 		//
 		window.clear();
 		
 		nave.draw(window, DEBUG_ACTIVADO);
-		//ladrillos.draw(window);
+		ladrillos.draw(window);
 		bola.draw(window, DEBUG_ACTIVADO);		
 		window.draw(text_net_graph);
 		window.display();

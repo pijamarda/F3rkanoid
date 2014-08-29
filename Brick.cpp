@@ -71,6 +71,7 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT)
 				# # # # #
 				*/
 				//TODO: Considerar asignar aqui mismo la poisicion en el propio sprite
+				spriteTemp.setPosition(sf::Vector2f(50+i*anchoTemp, 50+j*altoTemp));
 				Ladrillo ladrilloTemp = { spriteTemp, sf::Vector2f(i*anchoTemp, j*altoTemp) };
 				ladrillos.push_back(ladrilloTemp);
 			}
@@ -94,8 +95,8 @@ void Brick::draw(sf::RenderWindow &window)
 	//TODO: Probar a cambiar la asignacion de posicion en el propio sprite del Struct ladrillo
 	for (auto lad : ladrillos)
 	{
-		sf::Vector2f posTemp = sf::Vector2f(lad.pos.x, lad.pos.y);
-		lad.sprite.setPosition(posTemp);
+		//sf::Vector2f posTemp = sf::Vector2f(lad.pos.x, lad.pos.y);
+		//lad.sprite.setPosition(posTemp);
 		window.draw(lad.sprite);
 	}
 }

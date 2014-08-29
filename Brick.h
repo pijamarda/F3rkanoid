@@ -35,6 +35,13 @@ public:
 	{
 		sf::Sprite sprite;
 		sf::Vector2f pos;
+
+		float x() { return sprite.getPosition().x; }
+		float y() { return sprite.getPosition().y; }
+		float left() { return sprite.getGlobalBounds().left; }
+		float right() { return sprite.getGlobalBounds().left + sprite.getGlobalBounds().width; }
+		float top() { return sprite.getGlobalBounds().top; }
+		float bottom() { return sprite.getGlobalBounds().top + sprite.getGlobalBounds().height; }
 	};
 
 	//Guardamos todos los ladrillos en un vector
