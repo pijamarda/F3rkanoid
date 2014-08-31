@@ -108,27 +108,52 @@ void bolaBrickCollision(Bola &mBola, Brick &mbrick)
 	//El segundo && comprueba si la parte izquierda de la bola esta dentro de la nave
 	for (auto &ladrillo : mbrick.ladrillos)
 	{
-		if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
+		//Si detectamos la colision por la izquierda o la derecha del ladrillo entonces
+		if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) &&
 			(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
 		{
-			
-			//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
-			//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
+			//si la bola viene desde arriba, entonces...
 			if ((mBola.bottom() >= ladrillo.top() && mBola.bottom() <= ladrillo.bottom()) ||
 				(mBola.top() <= ladrillo.bottom() && mBola.top() >= ladrillo.top()))
-			{	
-				std::cout << "hay col dato" << std::endl;
+			{
+				std::cout << "Colision vertical" << std::endl;
+				//ladrillo.sprite.setColor(sf::Color::Black);
+				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
+				mBola.anguloBola = mBola.normalizaAngulo(-mBola.anguloBola);
+			}
+		}
+		//si detectamos la colision por arriba o por abajo
+		else if ((mBola.bottom() >= ladrillo.top() && mBola.bottom() <= ladrillo.bottom()) &&
+				 (mBola.top() <= ladrillo.bottom() && mBola.top() >= ladrillo.top()))
+		{
+			if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
+				(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
+			{
+				std::cout << "Colision lateral" << std::endl;
 				//ladrillo.sprite.setColor(sf::Color::Black);
 				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
 				//TODO: Esto solo cambioa hacia abajo o arriba la bola
 				//hay que hacer la colision lateral
-				mBola.anguloBola = mBola.normalizaAngulo(-mBola.anguloBola);
-
+				mBola.anguloBola = mBola.normalizaAngulo(180-mBola.anguloBola);
+			}
+		}
+		else if ((mBola.bottom() >= ladrillo.top() && mBola.bottom() <= ladrillo.bottom()) ||
+				 (mBola.top() <= ladrillo.bottom() && mBola.top() >= ladrillo.top()))
+		{
+			if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
+				(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
+			{
+				std::cout << "Colision diagonal" << std::endl;
+				//ladrillo.sprite.setColor(sf::Color::Black);
+				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
+				//TODO: Esto solo cambioa hacia abajo o arriba la bola
+				//hay que hacer la colision lateral
+				mBola.anguloBola = mBola.normalizaAngulo(180 + mBola.anguloBola);
 			}
 		}
 		
-	}
-};
+	} //fin del for que recorre los ladrillos del objecto Brick
+};// fin de la funcion que comprueba la colision de la bola con los ladrillos
 
 int main()
 {
