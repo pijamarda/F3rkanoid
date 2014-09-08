@@ -15,9 +15,7 @@ void testCollision(Bola &mBola, Nave &mNave)
 		//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
 		//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
 		if (mBola.bottom() >= mNave.top())
-		{			
-
-			
+		{				
 			/*
 			*	Vamos a intentar que el angulo de salida de rebote dependa de en que parte de la nave 
 			*	colisiona.
@@ -27,24 +25,8 @@ void testCollision(Bola &mBola, Nave &mNave)
 			float centroBolaX = (mBola.right() + mBola.left()) / 2;
 			//Calculamos la coordenada actual del centro de la nave
 			float centroNaveX = (mNave.right() + mNave.left()) / 2;
-			//Ahora vamos a hacer la comparacion de donde rebota la bola respecto a la nave
-			// Dividimos la nave en varias zonas de choque, en principio 5
-			int numeroZonas = 5;
-			float tamZonaChoque = (mNave.right() - mNave.left()) / numeroZonas;
-			//Estas zonas nos daran un rango de x para comparar
-			//por ahora solo voy a sacar por consola la zona de la nave donde choca
-			/*
-			if (centroBolaX < mNave.left() + tamZonaChoque)
-				std::cout << "Zona 1" << std::endl;
-			else if (centroBolaX < mNave.left() + tamZonaChoque*2)
-				std::cout << "Zona 2" << std::endl;
-			else if (centroBolaX < mNave.left() + tamZonaChoque*3)
-				std::cout << "Zona 3" << std::endl;
-			else if (centroBolaX < mNave.left() + tamZonaChoque*4)
-				std::cout << "Zona 4" << std::endl;
-			else if (centroBolaX < mNave.left() + tamZonaChoque*5)
-				std::cout << "Zona 5" << std::endl;
-			*/
+			
+			
 
 			//Formula el calculo del angulo de salida del rebote segun donde impacte
 			/*
@@ -58,13 +40,15 @@ void testCollision(Bola &mBola, Nave &mNave)
 			*	de salida que va a tomar la bola
 			*/
 
+			float anguloDeEntrada = mBola.anguloBola;
 			float anguloDeSalida = mBola.anguloBola;
 
 			if (mBola.anguloBola > 0 && mBola.anguloBola <= 180)
 			{
-				float diferencial = 180.0f / mNave.naveAncho;
+				//dividimos las 180 partes por el tamaño de la nave
 				//en nuestro caso particular da alrededor de 0'73
-				float centroNaveX = (mNave.right() + mNave.left()) / 2;
+				float diferencial = 180.0f / mNave.naveAncho;
+				
 				//ahora calculamos la diferencia de la bola en e nave respecto al centro
 				//de la bola, es decir restamos el centro de la bola menos la coordenada x de la nave
 				//eso nos da la zona de impacto entre 0 y la anchura
@@ -73,20 +57,16 @@ void testCollision(Bola &mBola, Nave &mNave)
 				//el angulo de salida sera la zona de impacto sobre la nave por el diferencial calculado antes
 				//y despues sumamos 180 porque corresponde a un rebote con direccion de izquierda a derecha
 
-				if (anguloDeSalida >= 0 && anguloDeSalida <= 90)
-					if (anguloDeSalida >= 30 || impactoBola < 0)
-						anguloDeSalida = -anguloDeSalida + impactoBola*diferencial;
-					else
-						anguloDeSalida = -anguloDeSalida;
-				if (anguloDeSalida > 90 && anguloDeSalida <= 180)
-					if (anguloDeSalida <= 150 || impactoBola > 0)
-						anguloDeSalida = -anguloDeSalida + impactoBola*diferencial;
-					else
-						anguloDeSalida = -anguloDeSalida;
+				
+				if (anguloDeEntrada >= 30 && anguloDeEntrada <= 150)
+					anguloDeSalida = impactoBola*diferencial - anguloDeEntrada;
+				else
+					anguloDeSalida = -anguloDeEntrada;
+				
 
 				//DEBUG: Mostramos por consola
 				std::cout << "entrada: " << mBola.anguloBola << std::endl;
-				std::cout << "encho nave: " << mNave.naveAncho << " ";
+				//std::cout << "encho nave: " << mNave.naveAncho << " ";
 				std::cout << "impactoBola: " << impactoBola << std::endl;
 				std::cout << "salida: " << anguloDeSalida << std::endl;
 				//std::cout << "salida norm: " << mBola.normalizaAngulo(anguloDeSalida) << std::endl;
