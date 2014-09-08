@@ -49,14 +49,15 @@ void testCollision(Bola &mBola, Nave &mNave)
 				//en nuestro caso particular da alrededor de 0'73
 				float diferencial = 180.0f / mNave.naveAncho;
 				
-				//ahora calculamos la diferencia de la bola en e nave respecto al centro
-				//de la bola, es decir restamos el centro de la bola menos la coordenada x de la nave
-				//eso nos da la zona de impacto entre 0 y la anchura
+				//ahora calculamos la diferencia del centro de la bola respecto al centro
+				//de la nave, es decir restamos el centro de la bola menos la coordenada x del centro de
+				//la nave eso nos da la zona de impacto.
 				float impactoBola = centroBolaX - centroNaveX;
 
 				//el angulo de salida sera la zona de impacto sobre la nave por el diferencial calculado antes
-				//y despues sumamos 180 porque corresponde a un rebote con direccion de izquierda a derecha
-
+				//y le restamos el angulo de entrada
+				//en el caso de que choque en el centro la zona de impacto por el diferencial sera cero
+				//y en los extremos cambiara mucho el angulo de salida
 				
 				if (anguloDeEntrada >= 30 && anguloDeEntrada <= 150)
 					anguloDeSalida = impactoBola*diferencial - anguloDeEntrada;
@@ -169,6 +170,7 @@ int main()
 	sf::Vector2i localMouseCoords;
 	sf::Clock clock;
 	float dt;
+	bool pausa = false;
 
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
@@ -222,6 +224,10 @@ int main()
 			{
 				bola.ballVelocity += 15;
 			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			{
+				pausa = !pausa;
+			}
 			localMouseCoords = sf::Mouse::getPosition(window);
 		}
 
@@ -234,10 +240,16 @@ int main()
 		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
 		
 		text_net_graph.setString(t_net_graph);
-		nave.actualizarPos(dt, localMouseCoords);
-		bola.actualizarPos(dt);
-		testCollision(bola, nave);
-		bolaBrickCollision(bola, ladrillos);
+
+		//A ver que tal funciona
+
+		if (!pausa)
+		{
+			nave.actualizarPos(dt, localMouseCoords);
+			bola.actualizarPos(dt);
+			testCollision(bola, nave);
+			bolaBrickCollision(bola, ladrillos);
+		}
 		//
 		window.clear();
 		
