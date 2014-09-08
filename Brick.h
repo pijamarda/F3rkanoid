@@ -27,14 +27,14 @@ public:
 
 	unsigned int MAX_WIDTH;
 	unsigned int MAX_HEIGHT;
+	unsigned int BORDE_WIDTH;
 
 	unsigned int num_ladrillos;
 
-	//Cada ladrillo esta formado por un sprite y por su posicion global
+	//Cada ladrillo esta formado por un sprite y las funciones necesarias
 	struct Ladrillo
 	{
-		sf::Sprite sprite;
-		sf::Vector2f pos;
+		sf::Sprite sprite;		
 
 		float x() { return sprite.getPosition().x; }
 		float y() { return sprite.getPosition().y; }
@@ -46,14 +46,15 @@ public:
 
 	//Guardamos todos los ladrillos en un vector
 	std::vector<Ladrillo> ladrillos;
-	//Para que sea sencillo su seleccion aleatoria guardamos las texaturas
+	//Para que sea sencillo su seleccion aleatoria guardamos las texturas
 	//en un vector
 	std::vector<sf::Texture> tipoLadrillos;
 
 	// Para el constructor facilitamos el ancho y alto del nivel LVL_WIDTH y LVL_HEIGHT
 	// el ancho y alto del nivel tienen en cuenta los bordes del propio nivel, es decir
-	// que no es el ancho total de la ventana
-	Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT);
+	// que no es el ancho total de la ventana, ademas le pasamos el ancho de la pared para
+	//calcular donde colocar los ladrillos dejando el espacio adecuado
+	Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigned int PARED_WIDTH);
 
 	void draw(sf::RenderWindow &window);
 

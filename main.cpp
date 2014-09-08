@@ -153,7 +153,7 @@ int main()
 	const unsigned int PARED_HEIGHT = 20;
 
 	//Tamaño real del nivel donde se desarrollara todo el juego
-	const unsigned int LVL_WIDTH = MAX_WIDTH - PARED_WIDTH;
+	const unsigned int LVL_WIDTH = MAX_WIDTH - PARED_WIDTH*2;
 	const unsigned int LVL_HEIGHT = MAX_HEIGHT - PARED_HEIGHT;
 
 	//Velocidades iniciales de la nave y la bola
@@ -175,7 +175,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
-	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT);
+	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT, PARED_WIDTH);
 
 	if (!font.loadFromFile("fonts/sansation.ttf"))
 	{
@@ -224,7 +224,7 @@ int main()
 			{
 				bola.ballVelocity += 15;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 			{
 				pausa = !pausa;
 			}
@@ -241,7 +241,8 @@ int main()
 		
 		text_net_graph.setString(t_net_graph);
 
-		//A ver que tal funciona
+		//A ver que tal funciona, si le damos a la "P" se deberia pausar la actualizacion de las posiciones
+		// de la nave y la bola
 
 		if (!pausa)
 		{

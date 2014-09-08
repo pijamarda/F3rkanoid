@@ -1,9 +1,10 @@
 #include "Brick.h"
 
-Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT)
+Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigned int PARED_WIDTH)
 {
 	MAX_WIDTH = LVL_WIDTH;
 	MAX_HEIGHT = LVL_HEIGHT;
+	BORDE_WIDTH = PARED_WIDTH;
 
 	sf::Texture text1;
 	text1.loadFromFile("img/png/element_blue_rectangle.png");
@@ -61,18 +62,25 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT)
 
 				//std::cout << anchoTemp << " " << altoTemp << " ";
 
-				//TODO: Debemos marcar la posicion inicial del bloque de ladrillos
-				// ahora mismo lo estamos generando desde la esquina arriba izquierda (0,0)
+				//vamos a calcular el offset de los ladrillos basados en el tamaño del bloque
+				// y el tamaño del nivel
+				// deberia ser la diferencia entre el tamaño total del nivel menos el ancho 
+				//de todos los ladrillos y el resultado partido por 2
 
+				float offsetX = (LVL_WIDTH - num_ladrillos*anchoTemp)/2;
+				float offsetY = 50;
 				/*
 				Asignamos a cada ladrillo del vector, un sprite aleatorio y una posicion
 				de manera que queda 
-				# # # # #
-				# # # # #
+
+					# # # # #
+					# # # # #
+					# # # # #
+
 				*/
-				//TODO: Considerar asignar aqui mismo la poisicion en el propio sprite
-				spriteTemp.setPosition(sf::Vector2f(50+i*anchoTemp, 50+j*altoTemp));
-				Ladrillo ladrilloTemp = { spriteTemp, sf::Vector2f(i*anchoTemp, j*altoTemp) };
+				
+				spriteTemp.setPosition(sf::Vector2f(offsetX+i*anchoTemp, offsetY+j*altoTemp));
+				Ladrillo ladrilloTemp = { spriteTemp };
 				ladrillos.push_back(ladrilloTemp);
 			}
 			//std::cout << std::endl;
@@ -88,10 +96,7 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT)
 }
 
 void Brick::draw(sf::RenderWindow &window)
-{	
-	//TODO: Ahora mismo el modo de posicionar cada sprite es un poco enrevesado
-	// en vez de asignar la posicion del sprite en el momento de su creacion
-	// asignamos su posicion en el metodo pintar, es posible que sea lento
+{		
 	//TODO: Probar a cambiar la asignacion de posicion en el propio sprite del Struct ladrillo
 	for (auto lad : ladrillos)
 	{
