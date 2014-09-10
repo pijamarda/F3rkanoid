@@ -67,7 +67,7 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigne
 				// deberia ser la diferencia entre el tamaño total del nivel menos el ancho 
 				//de todos los ladrillos y el resultado partido por 2
 
-				float offsetX = (LVL_WIDTH - (ANCHO * anchoTemp)) / 2.0f;
+				float offsetX = ((LVL_WIDTH - (ANCHO * anchoTemp)) / 2.0f) + PARED_WIDTH;
 				float offsetY = 50;
 				/*
 				Asignamos a cada ladrillo del vector, un sprite aleatorio y una posicion

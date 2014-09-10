@@ -59,17 +59,19 @@ void testCollision(Bola &mBola, Nave &mNave)
 				//en el caso de que choque en el centro la zona de impacto por el diferencial sera cero
 				//y en los extremos cambiara mucho el angulo de salida
 				float angSalidaTemp = mBola.normalizaAngulo(impactoBola*diferencial - anguloDeEntrada);
+
+				anguloDeSalida = mBola.normalizaAngulo(-anguloDeEntrada);
 				
 				if (anguloDeEntrada >= 0 && anguloDeEntrada <= 90)
-					if (impactoBola < 0 && angSalidaTemp > 200)
+					if (impactoBola < 0) 
+						if (angSalidaTemp > 200)
+							anguloDeSalida = angSalidaTemp;
+					else if (angSalidaTemp < 340 )
 						anguloDeSalida = angSalidaTemp;
-					else
-						anguloDeSalida = -anguloDeEntrada;
+					
 				if (anguloDeEntrada > 90 && anguloDeEntrada <= 180)
 					if (impactoBola > 0 && angSalidaTemp < 340)
-						anguloDeSalida = angSalidaTemp;
-					else
-						anguloDeSalida = -anguloDeEntrada;			
+						anguloDeSalida = angSalidaTemp;							
 				
 
 				//DEBUG: Mostramos por consola
