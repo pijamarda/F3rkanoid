@@ -57,7 +57,7 @@ void Bola::actualizarPos(double dt)
 	if (position.x <= 0 + 20)
 	{
 		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia la izquierda
-		if (anguloBola > 90 || anguloBola <= 270)
+		if (anguloBola > 90 && anguloBola <= 270)
 			anguloBola = -(anguloBola - 180);
 		anguloBola = normalizaAngulo(anguloBola);
 		
@@ -74,7 +74,7 @@ void Bola::actualizarPos(double dt)
 	{
 		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia arriba
 		if (anguloBola > 180)
-			anguloBola = 360-anguloBola;
+			anguloBola = -anguloBola;
 		anguloBola = normalizaAngulo(anguloBola);
 		
 	}
@@ -85,7 +85,7 @@ void Bola::actualizarPos(double dt)
 		//sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
 		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia abajo
 		if (anguloBola < 180)
-			anguloBola = 360 - anguloBola;
+			anguloBola = - anguloBola;
 		anguloBola = normalizaAngulo(anguloBola);		
 	}
 	

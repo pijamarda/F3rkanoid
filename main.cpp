@@ -58,11 +58,18 @@ void testCollision(Bola &mBola, Nave &mNave)
 				//y le restamos el angulo de entrada
 				//en el caso de que choque en el centro la zona de impacto por el diferencial sera cero
 				//y en los extremos cambiara mucho el angulo de salida
+				float angSalidaTemp = mBola.normalizaAngulo(impactoBola*diferencial - anguloDeEntrada);
 				
-				if (anguloDeEntrada >= 30 && anguloDeEntrada <= 150)
-					anguloDeSalida = impactoBola*diferencial - anguloDeEntrada;
-				else
-					anguloDeSalida = -anguloDeEntrada;
+				if (anguloDeEntrada >= 0 && anguloDeEntrada <= 90)
+					if (impactoBola < 0 && angSalidaTemp > 200)
+						anguloDeSalida = angSalidaTemp;
+					else
+						anguloDeSalida = -anguloDeEntrada;
+				if (anguloDeEntrada > 90 && anguloDeEntrada <= 180)
+					if (impactoBola > 0 && angSalidaTemp < 340)
+						anguloDeSalida = angSalidaTemp;
+					else
+						anguloDeSalida = -anguloDeEntrada;			
 				
 
 				//DEBUG: Mostramos por consola
@@ -142,7 +149,7 @@ int main()
 	//Con el modo debug activado, vemos lo siguiente:
 	// Los bordes de colision de los elementos, nave, bola
 	// el net_graph indicando FPS, angulo de la bola normalizado y offset de desplazamiento
-	const bool DEBUG_ACTIVADO = true;
+	const bool DEBUG_ACTIVADO = false;
 
 	//Tamaño de la ventana
 	const unsigned int MAX_WIDTH = 600;
@@ -197,37 +204,42 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			if (event.type == sf::Event::KeyPressed)
 			{
-				bola.resetPosition();
+				if (event.key.code == sf::Keyboard::Q)
+				{
+					bola.resetPosition();
+				}
+				else if (event.key.code == (sf::Keyboard::Left))
+				{
+					// left key is pressed: move our character
+					if (nave.dNave == direccion::parado)
+						nave.dNave = direccion::izquierda;
+					else if (nave.dNave == direccion::derecha)
+						nave.dNave = direccion::parado;
+				}
+				else if (event.key.code == (sf::Keyboard::Right))
+				{
+					if (nave.dNave == direccion::parado)
+						nave.dNave = direccion::derecha;
+					else if (nave.dNave == direccion::izquierda)
+						nave.dNave = direccion::parado;
+				}
+				else if (event.key.code == (sf::Keyboard::Z))
+				{
+					bola.ballVelocity -= 15;
+				}
+				else if (event.key.code == (sf::Keyboard::A))
+				{
+					bola.ballVelocity += 15;
+				}
+				else if (event.key.code == (sf::Keyboard::P))
+				{
+					pausa = !pausa;
+				}
+
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				// left key is pressed: move our character
-				if (nave.dNave == direccion::parado)
-					nave.dNave = direccion::izquierda;
-				else if (nave.dNave == direccion::derecha)
-					nave.dNave = direccion::parado;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				if (nave.dNave == direccion::parado)
-					nave.dNave = direccion::derecha;
-				else if (nave.dNave == direccion::izquierda)
-					nave.dNave = direccion::parado;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			{
-				bola.ballVelocity -= 15;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			{
-				bola.ballVelocity += 15;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-			{
-				pausa = !pausa;
-			}
+			
 			localMouseCoords = sf::Mouse::getPosition(window);
 		}
 
@@ -237,7 +249,7 @@ int main()
 		t_net_graph = "";
 		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";		
 		t_net_graph += "angulo: " + std::to_string(bola.anguloBola) + "\n";
-		t_net_graph += std::to_string(bola.velocidadBola.x) + " , " + std::to_string(bola.velocidadBola.y) + "\n";
+		t_net_graph += std::to_string(bola.x()) + " , " + std::to_string(bola.y()) + "\n";
 		
 		text_net_graph.setString(t_net_graph);
 
@@ -257,7 +269,8 @@ int main()
 		nave.draw(window, DEBUG_ACTIVADO);
 		ladrillos.draw(window);
 		bola.draw(window, DEBUG_ACTIVADO);		
-		window.draw(text_net_graph);
+		if (DEBUG_ACTIVADO)
+			window.draw(text_net_graph);
 		window.display();
 	}
 
