@@ -16,7 +16,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 	MAX_HEIGHT = lvl_height;
 	if (!texture.loadFromFile("img/png/ballBlue.png"))
 	{
-		// error...
+		// error... prueba para el git sobre el error
 	}
 	sprite.setTexture(texture);
 	bolaAncho = sprite.getTextureRect().width;
