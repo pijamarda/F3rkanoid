@@ -1,0 +1,3 @@
+descargar el SDK correspondiente y cambiar las rutas de
+start.sh
+
