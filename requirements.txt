@@ -1,3 +1,11 @@
-descargar el SDK correspondiente y cambiar las rutas de
-start.sh
-
+instalamos el g++
+sudo apt-get install g++
+descargar el SDK correspondiente y cambiar las rutas de start.sh
+instalamos las librerias de desarrollo libglew
+sudo apt-get install libglew-dev
+buscamos donde la ha instalado
+find / | grep libGLEW.so.1.
+y hacemos un symlink con la 1.5
+sudo ln -s /usr/lib/x86_64-linux-gnu/libGLEW.so.1.10 /usr/lib/x86_64-linux-gnu/libGLEW.so.1.5
+instalamos otra biblioteca necesaria:
+sudo apt-get install libjpeg62-dev
