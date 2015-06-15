@@ -1,2 +1,4 @@
 *.o
 sfml-app
+F3rkanoid.vcxproj
+F3rkanoid.vcxproj.filters
