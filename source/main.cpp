@@ -35,6 +35,7 @@ int main()
 
 	sf::Font font;
 	sf::Text text_net_graph;
+	sf::Text text_pause;
 	std::string t_net_graph;
 	sf::Vector2i localMouseCoords;
 	sf::Clock clock;
@@ -55,7 +56,14 @@ int main()
 	text_net_graph.setString("NET GRAPH");
 	text_net_graph.setCharacterSize(18); // in pixels, not points!
 	text_net_graph.setColor(sf::Color::White);
-	text_net_graph.setStyle(sf::Text::Bold);	
+	text_net_graph.setStyle(sf::Text::Bold);
+
+	text_pause.setFont(font);
+	text_pause.setString("PAUSA");
+	text_pause.setPosition(300, 200);
+	text_pause.setCharacterSize(18); // in pixels, not points!
+	text_pause.setColor(sf::Color::White);
+	text_pause.setStyle(sf::Text::Bold);
 	
 	//window.setFramerateLimit(60);
 
@@ -148,7 +156,7 @@ int main()
 		}
 		else //Mostramos el Menu
 		{
-
+			
 		}
 		//
 		window.clear();
@@ -160,6 +168,8 @@ int main()
 		bola.draw(window, DEBUG_ACTIVADO);		
 		if (DEBUG_ACTIVADO)
 			window.draw(text_net_graph);
+		if (pausa)
+			window.draw(text_pause);
 		window.display();
 	}
 
