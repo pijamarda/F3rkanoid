@@ -58,6 +58,17 @@ int main()
 	text_net_graph.setStyle(sf::Text::Bold);	
 	
 	//window.setFramerateLimit(60);
+
+	sf::RectangleShape bordeIzquierdo(sf::Vector2f(PARED_WIDTH, MAX_HEIGHT));
+	bordeIzquierdo.setFillColor(sf::Color::Cyan);
+
+	sf::RectangleShape bordeDerecho(sf::Vector2f(PARED_WIDTH, MAX_HEIGHT));
+	bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
+	bordeDerecho.setFillColor(sf::Color::Blue);
+
+	sf::RectangleShape bordeTop(sf::Vector2f(MAX_WIDTH, PARED_HEIGHT));
+	//bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
+	bordeTop.setFillColor(sf::Color::Red);
 		
 	while (window.isOpen())
 	{
@@ -122,12 +133,28 @@ int main()
 		{
 			nave.actualizarPos(dt, localMouseCoords);
 			bola.actualizarPos(dt);
-			testCollision(bola, nave);
-			bolaBrickCollision(bola, ladrillos);
+			if (testCollision(bola, nave))
+			{
+				bola.playSoundPaddle();
+			}
+			if (bolaBrickCollision(bola, ladrillos))
+			{
+				bola.playSoundBrick();
+				std::cout << ladrillos.ladrillos_restantes << std::endl;
+				
+			}
+			if (ladrillos.ladrillos_restantes <= 0)
+				pausa = true;
+		}
+		else //Mostramos el Menu
+		{
+
 		}
 		//
 		window.clear();
-		
+		window.draw(bordeIzquierdo);
+		window.draw(bordeDerecho);
+		window.draw(bordeTop);
 		nave.draw(window, DEBUG_ACTIVADO);
 		ladrillos.draw(window);
 		bola.draw(window, DEBUG_ACTIVADO);		

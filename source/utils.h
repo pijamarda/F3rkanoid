@@ -4,5 +4,5 @@
 #include "Nave.h"
 #include "Bola.h"
 
-void testCollision(Bola &mBola, Nave &mNave);
-void bolaBrickCollision(Bola &mBola, Brick &mbrick);
+bool testCollision(Bola &mBola, Nave &mNave);
+bool bolaBrickCollision(Bola &mBola, Brick &mbrick);

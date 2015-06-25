@@ -57,7 +57,9 @@ void Nave::actualizarPos(double dt, sf::Vector2i mouseCoords)
 	// se ha hecho deprisa y corriendo quizas haya algun fallo extra
 	float coordenadaX = mouseCoords.x;
 	if (coordenadaX > MAX_WIDTH - naveAncho)
-		coordenadaX = MAX_WIDTH - naveAncho;
+		coordenadaX = MAX_WIDTH - naveAncho + 20;
+	if (coordenadaX < 20)
+		coordenadaX = 20;
 	sprite.setPosition(sf::Vector2f(coordenadaX,this->y()));
 
 	boundingBox = sprite.getGlobalBounds();

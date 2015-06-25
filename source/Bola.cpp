@@ -38,6 +38,18 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 	direcLine[1].position = sf::Vector2f(20, 70);
 	direcLine[1].color = sf::Color::Red;
 
+	//Sonidos
+	
+	if (!bufferPaddle.loadFromFile("sound/paddle.wav"))
+		std::cout << "error al cargar la fuente" << std::endl;
+	
+	soundPaddle.setBuffer(bufferPaddle);
+	
+	if (!bufferBrick.loadFromFile("sound/brick.wav"))
+		std::cout << "error al cargar la fuente" << std::endl;
+
+	soundBrick.setBuffer(bufferBrick);
+
 }
 
 void Bola::draw(sf::RenderWindow &window, bool debug)
@@ -81,11 +93,13 @@ void Bola::actualizarPos(double dt)
 	//Esto indica que la bola se ha caido por abajo y la volvemos a colocar en el centro
 	else if (position.y >= MAX_HEIGHT)
 	{
-		//anguloBola = ANGULO_INICIAL;
-		//sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
+		anguloBola = ANGULO_INICIAL;
+		sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));
 		//Es decir, solo cambiamos el angulo de la bola si la bola va hacia abajo
+		/*
 		if (anguloBola < 180)
 			anguloBola = - anguloBola;
+			*/
 		anguloBola = normalizaAngulo(anguloBola);		
 	}
 	
@@ -143,4 +157,16 @@ void Bola::resetPosition()
 {
 	sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));	
 	anguloBola = ANGULO_INICIAL;
+}
+
+void Bola::playSoundPaddle()
+{
+	
+	soundPaddle.play();
+}
+
+void Bola::playSoundBrick()
+{
+
+	soundBrick.play();
 }

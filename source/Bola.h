@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 
@@ -22,13 +23,20 @@ public:
 	unsigned int bolaAlto;
 	float anguloBola;
 	float ANGULO_INICIAL;
+	sf::Sound soundPaddle;
+	sf::SoundBuffer bufferPaddle;
+	sf::Sound soundBrick;
+	sf::SoundBuffer bufferBrick;
 
 
 	//Constructor principal, al que le pasamos directamente el ancho y alto que tiene el nivel
 	// y la velocidad de la bola
 	Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_inicial, float angulo_inicial);
 
-	void draw(sf::RenderWindow &window, bool debug);	
+	void draw(sf::RenderWindow &window, bool debug);
+
+	void playSoundPaddle();
+	void playSoundBrick();
 	
 	//Vamos a utilizar los grados a los que mira la bola para actualizar su posicion
 	//esta actualizacion se va a basar en el angulo

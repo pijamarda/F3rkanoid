@@ -2,13 +2,17 @@
 
 #include "utils.h"
 
-void testCollision(Bola &mBola, Nave &mNave)
+bool testCollision(Bola &mBola, Nave &mNave)
 {
+	bool hay_colision = false;
 	//El primer && del if comprueba si la parte derecha de la bola esta dentro de la nave
 	//El segundo && comprueba si la parte izquierda de la bola esta dentro de la nave
 	if ((mBola.right() >= mNave.left() && mBola.right() <= mNave.right()) ||
 		(mBola.left() >= mNave.left() && mBola.left() <= mNave.right()))
 	{
+		//Si se cumplen las condiciones anteriores entonces hay colision
+		
+
 		//En cualquiera de los 2 casos anteriormente indicados comprobamos que la parte 
 		//baja de la bola entra en contacto con la parte superior de la nave y rebotamos
 		if (mBola.bottom() >= mNave.top())
@@ -72,25 +76,28 @@ void testCollision(Bola &mBola, Nave &mNave)
 
 
 				//DEBUG: Mostramos por consola
-				std::cout << "entrada: " << mBola.anguloBola << std::endl;
+				//std::cout << "entrada: " << mBola.anguloBola << std::endl;
 				//std::cout << "encho nave: " << mNave.naveAncho << " ";
-				std::cout << "impactoBola: " << impactoBola << std::endl;
-				std::cout << "salida: " << anguloDeSalida << std::endl;
+				//std::cout << "impactoBola: " << impactoBola << std::endl;
+				//std::cout << "salida: " << anguloDeSalida << std::endl;
 				//std::cout << "salida norm: " << mBola.normalizaAngulo(anguloDeSalida) << std::endl;
 			}
 
 			//mBola.anguloBola = anguloDeSalida;//360 - mBola.anguloBola;
 			mBola.anguloBola = mBola.normalizaAngulo(anguloDeSalida);
+			hay_colision = true;
 
 
 		}
 		//TODO: Ajustar la zona de rebote, sobre todo cuando golpea lateralmente la NAVE
 		//ahora mismo tiene un comportamiento herratico	
 	}
+	return hay_colision;
 };
 
-void bolaBrickCollision(Bola &mBola, Brick &mbrick)
+bool bolaBrickCollision(Bola &mBola, Brick &mbrick)
 {
+	bool hay_colision = false;
 	//El primer && del if comprueba si la parte derecha de la bola esta dentro de la nave
 	//El segundo && comprueba si la parte izquierda de la bola esta dentro de la nave
 	for (auto &ladrillo : mbrick.ladrillos)
@@ -99,13 +106,17 @@ void bolaBrickCollision(Bola &mBola, Brick &mbrick)
 		if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) &&
 			(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
 		{
+
 			//si la bola viene desde arriba, entonces...
 			if ((mBola.bottom() >= ladrillo.top() && mBola.bottom() <= ladrillo.bottom()) ||
 				(mBola.top() <= ladrillo.bottom() && mBola.top() >= ladrillo.top()))
 			{
-				std::cout << "Colision vertical" << std::endl;
+				hay_colision = true;
+				mbrick.ladrillos_restantes--;
+				//std::cout << "Colision vertical" << std::endl;
 				//ladrillo.sprite.setColor(sf::Color::Black);
 				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
+				
 				mBola.anguloBola = mBola.normalizaAngulo(-mBola.anguloBola);
 			}
 		}
@@ -116,7 +127,9 @@ void bolaBrickCollision(Bola &mBola, Brick &mbrick)
 			if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
 				(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
 			{
-				std::cout << "Colision lateral" << std::endl;
+				hay_colision = true;
+				mbrick.ladrillos_restantes--;
+				//std::cout << "Colision lateral" << std::endl;
 				//ladrillo.sprite.setColor(sf::Color::Black);
 				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
 				//TODO: Esto solo cambioa hacia abajo o arriba la bola
@@ -130,7 +143,9 @@ void bolaBrickCollision(Bola &mBola, Brick &mbrick)
 			if ((mBola.right() >= ladrillo.left() && mBola.right() <= ladrillo.right()) ||
 				(mBola.left() >= ladrillo.left() && mBola.left() <= ladrillo.right()))
 			{
-				std::cout << "Colision diagonal" << std::endl;
+				hay_colision = true;
+				mbrick.ladrillos_restantes--;
+				//std::cout << "Colision diagonal" << std::endl;
 				//ladrillo.sprite.setColor(sf::Color::Black);
 				ladrillo.sprite.setPosition(sf::Vector2f(-500.0f, -500.0f));
 				//TODO: Esto solo cambioa hacia abajo o arriba la bola
@@ -140,4 +155,5 @@ void bolaBrickCollision(Bola &mBola, Brick &mbrick)
 		}
 
 	} //fin del for que recorre los ladrillos del objecto Brick
+	return hay_colision;
 };// fin de la funcion que comprueba la colision de la bola con los ladrillos

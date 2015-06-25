@@ -19,8 +19,8 @@ class Brick
 {
 public:
 	//Ancho y Alto designan el numereo de ladrillos que hay y su distribucion
-	const unsigned int ANCHO = 5;
-	const unsigned int ALTO = 5;
+	const unsigned int ANCHO = 2;
+	const unsigned int ALTO = 2;
 	//NUM_COLORES es el numero de ladrillos distintos que tenemos, ahora mismo
 	//utilizamos 6 imagenes distintas
 	const unsigned int NUM_COLORES = 6;
@@ -30,6 +30,7 @@ public:
 	unsigned int BORDE_WIDTH;
 
 	unsigned int num_ladrillos;
+	int ladrillos_restantes;
 
 	//Cada ladrillo esta formado por un sprite y las funciones necesarias
 	struct Ladrillo

@@ -40,6 +40,7 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigne
 		srand((unsigned)time(0));
 
 		num_ladrillos = ANCHO * ALTO;
+		ladrillos_restantes = num_ladrillos;
 		// Este nivel compone los ladrillos de forma rectangular con dimensiones
 		// ANCHO x ALTO
 		for (unsigned int i = 0; i < ANCHO; i++)
