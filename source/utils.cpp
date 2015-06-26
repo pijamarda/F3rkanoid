@@ -1,5 +1,3 @@
-#pragma once
-
 #include "utils.h"
 
 bool testCollision(Bola &mBola, Nave &mNave)
