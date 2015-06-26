@@ -7,7 +7,7 @@ Nave::Nave(unsigned int lvl_width, unsigned int lvl_height, float velocidad_nave
 	//Guardamos en las variables MAX, los limites del nivel
 	MAX_WIDTH = lvl_width;
 	MAX_HEIGHT = lvl_height;
-	if (!texture.loadFromFile("img/png/paddleBlu.png"))
+	if (!texture.loadFromFile("data/img/png/paddleBlu.png"))
 	{
 		std::cout << "Ha habido un error en la carga de la textura de la Nave" << std::endl;
 	}

@@ -47,7 +47,7 @@ int main()
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
 	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT, PARED_WIDTH);
 
-	if (!font.loadFromFile("fonts/sansation.ttf"))
+	if (!font.loadFromFile("data/fonts/sansation.ttf"))
 	{
 		std::cout << "error al cargar la fuente" << std::endl;
 	}

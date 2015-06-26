@@ -14,7 +14,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 	
 	MAX_WIDTH = lvl_width;
 	MAX_HEIGHT = lvl_height;
-	if (!texture.loadFromFile("img/png/ballBlue.png"))
+	if (!texture.loadFromFile("data/img/png/ballBlue.png"))
 	{
 		// error... prueba para el git sobre el error
 	}
@@ -40,12 +40,12 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 
 	//Sonidos
 	
-	if (!bufferPaddle.loadFromFile("sound/paddle.wav"))
+	if (!bufferPaddle.loadFromFile("data/sound/paddle.wav"))
 		std::cout << "error al cargar la fuente" << std::endl;
 	
 	soundPaddle.setBuffer(bufferPaddle);
 	
-	if (!bufferBrick.loadFromFile("sound/brick.wav"))
+	if (!bufferBrick.loadFromFile("data/sound/brick.wav"))
 		std::cout << "error al cargar la fuente" << std::endl;
 
 	soundBrick.setBuffer(bufferBrick);

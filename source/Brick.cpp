@@ -7,27 +7,27 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigne
 	BORDE_WIDTH = PARED_WIDTH;
 
 	sf::Texture text1;
-	text1.loadFromFile("img/png/element_blue_rectangle.png");
+	text1.loadFromFile("data/img/png/element_blue_rectangle.png");
 	tipoLadrillos.push_back(text1);
 
 	sf::Texture text2;
-	text2.loadFromFile("img/png/element_green_rectangle.png");
+	text2.loadFromFile("data/img/png/element_green_rectangle.png");
 	tipoLadrillos.push_back(text2);
 
 	sf::Texture text3;
-	text3.loadFromFile("img/png/element_grey_rectangle.png");
+	text3.loadFromFile("data/img/png/element_grey_rectangle.png");
 	tipoLadrillos.push_back(text3);
 
 	sf::Texture text4;
-	text4.loadFromFile("img/png/element_purple_rectangle.png");
+	text4.loadFromFile("data/img/png/element_purple_rectangle.png");
 	tipoLadrillos.push_back(text4);
 
 	sf::Texture text5;
-	text5.loadFromFile("img/png/element_red_rectangle.png");
+	text5.loadFromFile("data/img/png/element_red_rectangle.png");
 	tipoLadrillos.push_back(text5);
 
 	sf::Texture text6;
-	text6.loadFromFile("img/png/element_yellow_rectangle.png");
+	text6.loadFromFile("data/img/png/element_yellow_rectangle.png");
 	tipoLadrillos.push_back(text6);
 
 	/*
