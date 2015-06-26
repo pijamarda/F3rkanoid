@@ -49,7 +49,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 		std::cout << "error al cargar la fuente" << std::endl;
 
 	soundBrick.setBuffer(bufferBrick);
-
+	
 }
 
 void Bola::draw(sf::RenderWindow &window, bool debug)
@@ -162,11 +162,11 @@ void Bola::resetPosition()
 void Bola::playSoundPaddle()
 {
 	
-	soundPaddle.play();
+	//soundPaddle.play();
 }
 
 void Bola::playSoundBrick()
 {
 
-	soundBrick.play();
+	//soundBrick.play();
 }

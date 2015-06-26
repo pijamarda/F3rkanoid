@@ -19,8 +19,8 @@ class Brick
 {
 public:
 	//Ancho y Alto designan el numereo de ladrillos que hay y su distribucion
-	const unsigned int ANCHO = 2;
-	const unsigned int ALTO = 2;
+	const unsigned int ANCHO = 1;
+	const unsigned int ALTO = 1;
 	//NUM_COLORES es el numero de ladrillos distintos que tenemos, ahora mismo
 	//utilizamos 6 imagenes distintas
 	const unsigned int NUM_COLORES = 6;
