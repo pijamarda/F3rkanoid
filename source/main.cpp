@@ -3,8 +3,6 @@
 #include "utils.h"
 
 
-
-
 int main()
 {
 
@@ -40,7 +38,9 @@ int main()
 	sf::Vector2i localMouseCoords;
 	sf::Clock clock;
 	float dt;
-	bool pausa = false;
+	bool pausa = true;
+	bool musica = true;
+	bool sonido = true;
 
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
@@ -58,12 +58,16 @@ int main()
 	text_net_graph.setColor(sf::Color::White);
 	text_net_graph.setStyle(sf::Text::Bold);
 
-	text_pause.setFont(font);
-	text_pause.setString("PAUSA");
-	text_pause.setPosition(300, 200);
+	text_pause.setFont(font);	
+	text_pause.setPosition(100, 250);
 	text_pause.setCharacterSize(18); // in pixels, not points!
 	text_pause.setColor(sf::Color::White);
 	text_pause.setStyle(sf::Text::Bold);
+	std::string texto_temp_pausa = "PAUSA \n";
+	texto_temp_pausa += "Pulsa P para empezar o para mostrar este menu \n\n";
+	texto_temp_pausa += "Pulsa M para apagar/encender musica \n";
+	texto_temp_pausa += "Pulsa S para apagar/encender sonido";
+	text_pause.setString(texto_temp_pausa);
 	
 	//window.setFramerateLimit(60);
 
@@ -77,6 +81,16 @@ int main()
 	sf::RectangleShape bordeTop(sf::Vector2f(MAX_WIDTH, PARED_HEIGHT));
 	//bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
 	bordeTop.setFillColor(sf::Color::Red);
+
+	//musica
+	sf::Music music;
+	if (!music.openFromFile("data/sound/music1.ogg"))
+	{ 
+		std::cout << "error al cargar la musica" << std::endl;		
+	}
+	music.setVolume(30);
+	music.play();
+	//music.pause();
 		
 	while (window.isOpen())
 	{
@@ -118,6 +132,18 @@ int main()
 				{
 					pausa = !pausa;
 				}
+				else if (event.key.code == (sf::Keyboard::M))
+				{
+					if (musica)
+						music.play();
+					else
+						music.pause();
+					musica = !musica;
+				}
+				else if (event.key.code == (sf::Keyboard::S))
+				{
+					sonido = !sonido;
+				}
 
 			}
 			
@@ -143,12 +169,14 @@ int main()
 			bola.actualizarPos(dt);
 			if (testCollision(bola, nave))
 			{
-				bola.playSoundPaddle();
+				if (sonido)
+					bola.playSoundPaddle();
 			}
 			if (bolaBrickCollision(bola, ladrillos))
 			{
-				bola.playSoundBrick();
-				std::cout << ladrillos.ladrillos_restantes << std::endl;
+				if (sonido)
+					bola.playSoundBrick();
+				//std::cout << ladrillos.ladrillos_restantes << std::endl;
 				
 			}
 			if (ladrillos.ladrillos_restantes <= 0)
