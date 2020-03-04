@@ -9,7 +9,7 @@ int main()
 	//Con el modo debug activado, vemos lo siguiente:
 	// Los bordes de colision de los elementos, nave, bola
 	// el net_graph indicando FPS, angulo de la bola normalizado y offset de desplazamiento
-	const bool DEBUG_ACTIVADO = false;
+	const bool DEBUG_ACTIVADO = true;
 
 	//Tamaño de la ventana
 	const unsigned int MAX_WIDTH = 600;
@@ -72,7 +72,7 @@ int main()
 	//window.setFramerateLimit(60);
 
 	sf::RectangleShape bordeIzquierdo(sf::Vector2f(PARED_WIDTH, MAX_HEIGHT));
-	bordeIzquierdo.setFillColor(sf::Color::Cyan);
+	bordeIzquierdo.setFillColor(sf::Color::Blue);
 
 	sf::RectangleShape bordeDerecho(sf::Vector2f(PARED_WIDTH, MAX_HEIGHT));
 	bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
@@ -154,9 +154,9 @@ int main()
 		
 		dt = clock.restart().asSeconds();
 		t_net_graph = "";
-		t_net_graph += "fps: " + std::to_string(1.f/dt) + "\n";		
-		t_net_graph += "angulo: " + std::to_string(bola.anguloBola) + "\n";
-		t_net_graph += std::to_string(bola.x()) + " , " + std::to_string(bola.y()) + "\n";
+		t_net_graph += "fps: " + std::to_string((int)(1.f/dt)) + "\n";		
+		t_net_graph += "angulo: " + std::to_string((int)bola.anguloBola) + "\n";
+		t_net_graph += std::to_string((int)bola.x()) + " , " + std::to_string((int)bola.y()) + "\n";
 		
 		text_net_graph.setString(t_net_graph);
 
