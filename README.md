@@ -3,6 +3,9 @@ F3rkanoid
 
 Clon de Arkanoid hecho con SFML
 
+See the demo here:
+https://youtu.be/B987opu2biw
+
 Requisitos:  
 g++ - GNU C++ compiler >= version 4.7
 
