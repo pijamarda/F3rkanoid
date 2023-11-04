@@ -19,7 +19,7 @@ http://sfml-dev.org/download/sfml/
 Descomprimimos el contenido de la carpeta, por ejemplo en:  
 /home/zeneke/data/sdk/SFML-2.3/  
 Compilamos con g++ utilizando el flag para utilizar c++11  
-g++ -c -std=c++0x source/*.cpp -I /home/zeneke/data/sdk/SFML-2.3/include  
+g++ -c -std=c++0x source/*.cpp   
 Linkamos con las librerias  
 g++ *.o -o sfml-app -L /home/zeneke/data/sdk/SFML-2.3/lib -lsfml-graphics -lsfml-window -lsfml-system  
 Y ejecutamos indicando manualmente donde estan los binarios de la libreria  

@@ -9,7 +9,7 @@ int main()
 	//Con el modo debug activado, vemos lo siguiente:
 	// Los bordes de colision de los elementos, nave, bola
 	// el net_graph indicando FPS, angulo de la bola normalizado y offset de desplazamiento
-	const bool DEBUG_ACTIVADO = true;
+	const bool DEBUG_ACTIVADO = false;
 
 	//Tamaño de la ventana
 	const unsigned int MAX_WIDTH = 600;
@@ -55,13 +55,13 @@ int main()
 	text_net_graph.setFont(font);
 	text_net_graph.setString("NET GRAPH");
 	text_net_graph.setCharacterSize(18); // in pixels, not points!
-	text_net_graph.setColor(sf::Color::White);
+	text_net_graph.setFillColor(sf::Color::White);
 	text_net_graph.setStyle(sf::Text::Bold);
 
 	text_pause.setFont(font);	
 	text_pause.setPosition(100, 250);
 	text_pause.setCharacterSize(18); // in pixels, not points!
-	text_pause.setColor(sf::Color::White);
+	text_pause.setFillColor (sf::Color::White);
 	text_pause.setStyle(sf::Text::Bold);
 	std::string texto_temp_pausa = "PAUSA \n";
 	texto_temp_pausa += "Pulsa P para empezar o para mostrar este menu \n\n";
