@@ -39,7 +39,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 	direcLine[1].color = sf::Color::Red;
 
 	//Sonidos
-	
+	/*
 	if (!bufferPaddle.loadFromFile("data/sound/paddle.wav"))
 		std::cout << "error al cargar la fuente" << std::endl;
 	
@@ -51,6 +51,7 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 
 	soundBrick.setBuffer(bufferBrick);
 	soundBrick.setVolume(70);
+	*/
 }
 
 void Bola::draw(sf::RenderWindow &window, bool debug)
@@ -159,7 +160,7 @@ void Bola::resetPosition()
 	sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));	
 	anguloBola = ANGULO_INICIAL;
 }
-
+/*
 void Bola::playSoundPaddle()
 {
 	
@@ -171,3 +172,4 @@ void Bola::playSoundBrick()
 
 	soundBrick.play();
 }
+*/
