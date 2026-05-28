@@ -15,6 +15,11 @@ int main()
 	const unsigned int MAX_WIDTH = 600;
 	const unsigned int MAX_HEIGHT = 480;
 
+	// Scale factor for the display window. The game logic always runs at
+	// MAX_WIDTH x MAX_HEIGHT; SFML's View stretches it to the actual window.
+	// Change this to 1.5f or 3.0f to taste.
+	const float SCALE = 2.0f;
+
 	//Tamaño de la pared
 	const unsigned int PARED_WIDTH = 20;
 	const unsigned int PARED_HEIGHT = 20;
@@ -42,7 +47,8 @@ int main()
 	bool musica = false;
 	bool sonido = true;
 
-	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
+	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH * SCALE, MAX_HEIGHT * SCALE), "F3RKANOID");
+	window.setView(sf::View(sf::FloatRect(0, 0, MAX_WIDTH, MAX_HEIGHT)));
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
 	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT, PARED_WIDTH);
@@ -144,7 +150,10 @@ int main()
 
 			}
 			
-			localMouseCoords = sf::Mouse::getPosition(window);
+			// Map window pixels → game coordinates so the paddle tracks
+			// correctly regardless of the display scale factor.
+			sf::Vector2f m = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+			localMouseCoords = sf::Vector2i(static_cast<int>(m.x), static_cast<int>(m.y));
 		}
 
 		//actualizamos direccion nave

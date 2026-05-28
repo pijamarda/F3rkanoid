@@ -11,36 +11,71 @@ https://youtu.be/xNazb71JcUc
 
 ---
 
-## Building for Windows
+## Requirements
 
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) running.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+That's it. No compiler, no SFML, no extra tooling needed on the host machine.
+
+---
+
+## Build for Windows
+
+Open a terminal (PowerShell or CMD) in the **project root** and run:
 
 ```
 .\build-windows.cmd
 ```
 
-The first run compiles SFML 2.6.1 from source inside Docker (~5 min). Subsequent runs use the Docker layer cache and are fast.
+The first run downloads and compiles SFML 2.6.1 from source inside Docker — this takes ~5 minutes. Every subsequent run reuses the Docker layer cache and finishes in seconds.
 
 Output is placed in `dist\windows\`:
 
 ```
 dist\windows\
 ├── f3rkanoid.exe
-├── openal32.dll
-└── data\
+├── openal32.dll    ← required for audio, must stay next to the .exe
+└── data\           ← fonts, images and sounds
 ```
 
-Double-click `f3rkanoid.exe` to run — no extra installs needed on the target machine.
+---
 
-### Controls
+## Run the game
+
+Double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
+
+```
+cd dist\windows
+.\f3rkanoid.exe
+```
+
+> The executable must be run from inside `dist\windows\` so it can find the `data\` folder.
+
+---
+
+## Controls
 
 | Key | Action |
 |-----|--------|
 | P | Pause / resume |
-| M | Toggle music |
-| S | Toggle sound effects |
-| Q | Reset ball |
+| M | Toggle music on/off |
+| S | Toggle sound effects on/off |
+| Q | Reset ball position |
 | Z / A | Decrease / increase ball speed |
+
+Mouse controls the paddle.
+
+---
+
+## Window size
+
+The game renders at a 2× scale by default (1200×960). To change it, edit the constant at the top of `source/main.cpp`:
+
+```cpp
+const float SCALE = 2.0f;  // try 1.0, 1.5, 3.0 …
+```
+
+Then rebuild with `.\build-windows.cmd`.
 
 ---
 
@@ -50,8 +85,6 @@ Double-click `f3rkanoid.exe` to run — no extra installs needed on the target m
 - Mouse-controlled paddle
 - 5×5 brick grid with random colour assignment per level
 - Collision detection between ball↔paddle and ball↔bricks
-
----
 
 ---
 
