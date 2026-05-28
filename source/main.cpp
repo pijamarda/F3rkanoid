@@ -40,7 +40,7 @@ int main()
 	float dt;
 	bool pausa = true;
 	bool musica = false;
-	bool sonido = false;
+	bool sonido = true;
 
 	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
@@ -81,17 +81,14 @@ int main()
 	sf::RectangleShape bordeTop(sf::Vector2f(MAX_WIDTH, PARED_HEIGHT));
 	//bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
 	bordeTop.setFillColor(sf::Color::Red);
-/*
-	//musica
 	sf::Music music;
 	if (!music.openFromFile("data/sound/music1.ogg"))
-	{ 
-		std::cout << "error al cargar la musica" << std::endl;		
-	}
+		std::cout << "error loading music" << std::endl;
 	music.setVolume(30);
+	music.setLoop(true);
 	music.play();
-	//music.pause();
-*/		
+	musica = true;
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -131,21 +128,19 @@ int main()
 				else if (event.key.code == (sf::Keyboard::P))
 				{
 					pausa = !pausa;
-				}/*
+				}
 				else if (event.key.code == (sf::Keyboard::M))
 				{
 					if (musica)
-						music.play();
-					else
 						music.pause();
+					else
+						music.play();
 					musica = !musica;
 				}
-				
 				else if (event.key.code == (sf::Keyboard::S))
 				{
 					sonido = !sonido;
 				}
-				*/
 
 			}
 			
@@ -173,16 +168,12 @@ int main()
 			if (testCollision(bola, nave))
 			{
 				if (sonido)
-					sonido = false;
-					//bola.playSoundPaddle();
+					bola.playSoundPaddle();
 			}
 			if (bolaBrickCollision(bola, ladrillos))
 			{
 				if (sonido)
-					//bola.playSoundBrick();
-					sonido = false;
-				//std::cout << ladrillos.ladrillos_restantes << std::endl;
-				
+					bola.playSoundBrick();
 			}
 			
 			if (ladrillos.ladrillos_restantes <= 0)
