@@ -15,6 +15,11 @@ int main()
 	const unsigned int MAX_WIDTH = 600;
 	const unsigned int MAX_HEIGHT = 480;
 
+	// Scale factor for the display window. The game logic always runs at
+	// MAX_WIDTH x MAX_HEIGHT; SFML's View stretches it to the actual window.
+	// Change this to 1.5f or 3.0f to taste.
+	const float SCALE = 2.0f;
+
 	//Tamaño de la pared
 	const unsigned int PARED_WIDTH = 20;
 	const unsigned int PARED_HEIGHT = 20;
@@ -40,9 +45,10 @@ int main()
 	float dt;
 	bool pausa = true;
 	bool musica = false;
-	bool sonido = false;
+	bool sonido = true;
 
-	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH, MAX_HEIGHT), "F3RKANOID");
+	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH * SCALE, MAX_HEIGHT * SCALE), "F3RKANOID");
+	window.setView(sf::View(sf::FloatRect(0, 0, MAX_WIDTH, MAX_HEIGHT)));
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);
 	Brick ladrillos = Brick(1, LVL_WIDTH, LVL_HEIGHT, PARED_WIDTH);
@@ -81,17 +87,14 @@ int main()
 	sf::RectangleShape bordeTop(sf::Vector2f(MAX_WIDTH, PARED_HEIGHT));
 	//bordeDerecho.setPosition(sf::Vector2f(MAX_WIDTH - PARED_WIDTH, 0));
 	bordeTop.setFillColor(sf::Color::Red);
-/*
-	//musica
 	sf::Music music;
 	if (!music.openFromFile("data/sound/music1.ogg"))
-	{ 
-		std::cout << "error al cargar la musica" << std::endl;		
-	}
+		std::cout << "error loading music" << std::endl;
 	music.setVolume(30);
+	music.setLoop(true);
 	music.play();
-	//music.pause();
-*/		
+	musica = true;
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -131,25 +134,26 @@ int main()
 				else if (event.key.code == (sf::Keyboard::P))
 				{
 					pausa = !pausa;
-				}/*
+				}
 				else if (event.key.code == (sf::Keyboard::M))
 				{
 					if (musica)
-						music.play();
-					else
 						music.pause();
+					else
+						music.play();
 					musica = !musica;
 				}
-				
 				else if (event.key.code == (sf::Keyboard::S))
 				{
 					sonido = !sonido;
 				}
-				*/
 
 			}
 			
-			localMouseCoords = sf::Mouse::getPosition(window);
+			// Map window pixels → game coordinates so the paddle tracks
+			// correctly regardless of the display scale factor.
+			sf::Vector2f m = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+			localMouseCoords = sf::Vector2i(static_cast<int>(m.x), static_cast<int>(m.y));
 		}
 
 		//actualizamos direccion nave
@@ -173,16 +177,12 @@ int main()
 			if (testCollision(bola, nave))
 			{
 				if (sonido)
-					sonido = false;
-					//bola.playSoundPaddle();
+					bola.playSoundPaddle();
 			}
 			if (bolaBrickCollision(bola, ladrillos))
 			{
 				if (sonido)
-					//bola.playSoundBrick();
-					sonido = false;
-				//std::cout << ladrillos.ladrillos_restantes << std::endl;
-				
+					bola.playSoundBrick();
 			}
 			
 			if (ladrillos.ladrillos_restantes <= 0)

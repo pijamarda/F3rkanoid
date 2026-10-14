@@ -1,0 +1,7 @@
+# Normalise all text files to LF in the repository.
+# Keeps Dockerfiles and shell scripts safe, works fine on modern Windows tools.
+* text=auto eol=lf
+
+# Batch files need CRLF on Windows or CMD may misparse them.
+*.cmd text eol=crlf
+*.bat text eol=crlf

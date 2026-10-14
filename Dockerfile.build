@@ -1,0 +1,68 @@
+# Cross-compiles F3rkanoid for Windows (x86-64) from a Linux build environment.
+# The output is a self-contained Windows executable + openal32.dll + assets.
+#
+# Layer ordering is intentional: the expensive SFML build is cached as long as
+# the toolchain file and the SFML tag do not change.
+
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+        cmake make git \
+        g++-mingw-w64-x86-64 \
+    && rm -rf /var/lib/apt/lists/*
+
+# MinGW libs use lowercase names (libopengl32.a) but SFML's installed CMake
+# config references the Windows-style capitalised name (OpenGL32). Linux
+# filesystems are case-sensitive, so add a symlink to bridge the gap.
+RUN ln -s /usr/x86_64-w64-mingw32/lib/libopengl32.a \
+          /usr/x86_64-w64-mingw32/lib/libOpenGL32.a
+
+# Copy toolchain early so its layer feeds into the SFML build cache.
+COPY cmake/mingw-w64-toolchain.cmake /toolchain.cmake
+
+# ---------------------------------------------------------------------------
+# Build SFML 2.6.1 as static libraries targeting Windows/x86-64.
+# This layer is cached after the first `docker build` run (~5 min).
+# ---------------------------------------------------------------------------
+RUN git clone --depth 1 --branch 2.6.1 https://github.com/SFML/SFML.git /sfml-src
+
+# Grab openal32.dll from SFML's bundled extlibs before we delete the source.
+# Even with a fully static SFML build, audio still needs this DLL at runtime
+# because SFML links against the OpenAL import library (not a true static lib).
+RUN cp /sfml-src/extlibs/bin/x64/openal32.dll /openal32.dll
+
+RUN cmake -B /sfml-build -S /sfml-src \
+        -DCMAKE_TOOLCHAIN_FILE=/toolchain.cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DSFML_BUILD_EXAMPLES=OFF \
+        -DSFML_BUILD_DOC=OFF \
+        -DSFML_BUILD_TEST_SUITE=OFF \
+        -DCMAKE_INSTALL_PREFIX=/sfml-windows \
+        -DOPENAL_INCLUDE_DIR=/sfml-src/extlibs/headers/AL \
+        -DOPENAL_LIBRARY=/sfml-src/extlibs/libs-mingw/x64/libopenal32.a \
+    && cmake --build /sfml-build -j$(nproc) \
+    && cmake --install /sfml-build \
+    && rm -rf /sfml-src /sfml-build
+
+# ---------------------------------------------------------------------------
+# Build the game
+# ---------------------------------------------------------------------------
+WORKDIR /workspace
+COPY . .
+
+RUN cmake -B build \
+        -DCMAKE_TOOLCHAIN_FILE=cmake/mingw-w64-toolchain.cmake \
+        -DSFML_DIR=/sfml-windows/lib/cmake/SFML \
+        -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build build
+
+# ---------------------------------------------------------------------------
+# Assemble distributable folder
+# ---------------------------------------------------------------------------
+RUN mkdir -p dist \
+    && cp build/f3rkanoid.exe dist/ \
+    && cp /openal32.dll dist/ \
+    && cp -r data dist/

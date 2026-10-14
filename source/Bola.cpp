@@ -38,20 +38,15 @@ Bola::Bola(unsigned int lvl_width, unsigned int lvl_height, double velocidad_ini
 	direcLine[1].position = sf::Vector2f(20, 70);
 	direcLine[1].color = sf::Color::Red;
 
-	//Sonidos
-	/*
 	if (!bufferPaddle.loadFromFile("data/sound/paddle.wav"))
-		std::cout << "error al cargar la fuente" << std::endl;
-	
+		std::cout << "error loading paddle sound" << std::endl;
 	soundPaddle.setBuffer(bufferPaddle);
 	soundPaddle.setVolume(70);
-	
-	if (!bufferBrick.loadFromFile("data/sound/brick.wav"))
-		std::cout << "error al cargar la fuente" << std::endl;
 
+	if (!bufferBrick.loadFromFile("data/sound/brick.wav"))
+		std::cout << "error loading brick sound" << std::endl;
 	soundBrick.setBuffer(bufferBrick);
 	soundBrick.setVolume(70);
-	*/
 }
 
 void Bola::draw(sf::RenderWindow &window, bool debug)
@@ -160,16 +155,12 @@ void Bola::resetPosition()
 	sprite.setPosition(sf::Vector2f(MAX_WIDTH / 2 - bolaAncho / 2, MAX_HEIGHT / 2));	
 	anguloBola = ANGULO_INICIAL;
 }
-/*
 void Bola::playSoundPaddle()
 {
-	
 	soundPaddle.play();
 }
 
 void Bola::playSoundBrick()
 {
-
 	soundBrick.play();
 }
-*/
