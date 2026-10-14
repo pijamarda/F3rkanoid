@@ -143,4 +143,4 @@ REPO_URL=$(git remote get-url "$REMOTE" | sed -E 's#^git@github.com:#https://git
 echo ""
 echo "==> Released $TAG$($DRY_RUN && echo ' (dry run, nothing was changed)')"
 echo "    Build progress: $REPO_URL/actions"
-echo "    Release page:   $REPO_URL/releases/tag/$TAG   (ready in ~10-15 min)"
+echo "    Release page:   $REPO_URL/releases/tag/$TAG   (ready in ~3 min)"

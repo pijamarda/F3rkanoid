@@ -135,25 +135,13 @@ Then rebuild with `.\build-windows.cmd` (Windows) or `./build-linux.sh` (Linux).
 
 ## Making a release
 
-Releases are created with one command from an up-to-date `master` with no uncommitted changes:
+From an up-to-date `master` with no uncommitted changes, run `./release.sh` (or `./release.sh --dry-run` to preview). Pick the release type:
 
-```
-./release.sh
-```
+- **patch** (1.0.0 → 1.0.1): bug fixes, small changes
+- **minor** (1.0.0 → 1.1.0): new features
+- **major** (1.0.0 → 2.0.0): big or incompatible changes
 
-It reads the current version from the `VERSION` file and asks which kind of release this is:
-
-| Type | Example | Use it for |
-|------|---------|------------|
-| patch | 1.0.0 → 1.0.1 | bug fixes, small changes |
-| minor | 1.0.0 → 1.1.0 | new features |
-| major | 1.0.0 → 2.0.0 | big or incompatible changes |
-
-The script updates `VERSION`, commits it, creates the git tag (e.g. `v1.1.0`) and pushes both. The tag push starts the [Release workflow](.github/workflows/release.yml), which builds the Windows and Linux versions and publishes them on the Releases page after about 10–15 minutes.
-
-Use `./release.sh --dry-run` to see what would happen without changing anything.
-
-The version also appears in the game's window title (e.g. "F3RKANOID 1.1.0").
+The script bumps the `VERSION` file, tags the commit (e.g. `v1.1.0`) and pushes. GitHub Actions then builds both platforms and publishes them on the Releases page in about 3 minutes. Pushing to `master` without a tag never creates a release.
 
 ---
 
