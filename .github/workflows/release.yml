@@ -1,0 +1,60 @@
+# Builds the Windows and Linux versions and publishes them as a GitHub Release.
+# Triggered by pushing a tag like v1.2.3 (normally done by ./release.sh).
+# Tags with a suffix (v1.2.3-rc.1) are published as pre-releases.
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches VERSION file
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          VERSION="${TAG#v}"
+          BASE="${VERSION%%-*}"
+          FILE_VERSION="$(tr -d '[:space:]' < VERSION)"
+          if [ "$BASE" != "$FILE_VERSION" ]; then
+            echo "::error::Tag $TAG does not match VERSION file ($FILE_VERSION)"
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Build Windows
+        run: ./build-windows.sh
+
+      - name: Build Linux
+        run: ./build-linux.sh
+
+      - name: Package
+        run: |
+          mkdir release
+          WIN="f3rkanoid-$VERSION-windows-x64"
+          LIN="f3rkanoid-$VERSION-linux-x64"
+          cp -r dist/windows "release/$WIN"
+          cp -r dist/linux "release/$LIN"
+          cd release
+          zip -qr "$WIN.zip" "$WIN"
+          tar czf "$LIN.tar.gz" "$LIN"
+          sha256sum "$WIN.zip" "$LIN.tar.gz" > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE=""
+          [[ "$GITHUB_REF_NAME" == *-* ]] && PRERELEASE="--prerelease"
+          gh release create "$GITHUB_REF_NAME" \
+            release/*.zip release/*.tar.gz release/SHA256SUMS.txt \
+            --title "F3rkanoid $VERSION" \
+            --generate-notes $PRERELEASE

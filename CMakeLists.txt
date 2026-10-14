@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(F3rkanoid CXX)
+# The game version lives in the VERSION file (bumped by release.sh).
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" F3RKANOID_VERSION LIMIT_COUNT 1)
+project(F3rkanoid VERSION ${F3RKANOID_VERSION} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +14,8 @@ endif()
 
 file(GLOB SOURCES "source/*.cpp")
 add_executable(f3rkanoid ${SOURCES})
+
+target_compile_definitions(f3rkanoid PRIVATE F3RKANOID_VERSION="${F3RKANOID_VERSION}")
 
 find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 target_link_libraries(f3rkanoid PRIVATE
