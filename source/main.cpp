@@ -2,6 +2,11 @@
 
 #include "utils.h"
 
+// Set by CMake from the VERSION file; fallback for builds without CMake.
+#ifndef F3RKANOID_VERSION
+#define F3RKANOID_VERSION "dev"
+#endif
+
 
 int main()
 {
@@ -47,7 +52,7 @@ int main()
 	bool musica = false;
 	bool sonido = true;
 
-	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH * SCALE, MAX_HEIGHT * SCALE), "F3RKANOID");
+	sf::RenderWindow window(sf::VideoMode(MAX_WIDTH * SCALE, MAX_HEIGHT * SCALE), "F3RKANOID " F3RKANOID_VERSION);
 	window.setView(sf::View(sf::FloatRect(0, 0, MAX_WIDTH, MAX_HEIGHT)));
 	Nave nave = Nave(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_NAVE_INICIAL);	
 	Bola bola = Bola(LVL_WIDTH, LVL_HEIGHT, VELOCIDAD_BOLA_INICIAL, ANGULO_INICIAL);

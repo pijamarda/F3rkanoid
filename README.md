@@ -11,6 +11,21 @@ https://youtu.be/xNazb71JcUc
 
 ---
 
+## Download
+
+Ready-to-play builds are on the [Releases page](https://github.com/pijamarda/F3rkanoid/releases/latest). Pick the file for your system:
+
+| System | File | How to run |
+|--------|------|------------|
+| Windows | `f3rkanoid-X.Y.Z-windows-x64.zip` | Extract it and double-click `f3rkanoid.exe` |
+| Linux (x86-64) | `f3rkanoid-X.Y.Z-linux-x64.tar.gz` | `tar xzf f3rkanoid-*.tar.gz` then run `./f3rkanoid-*/f3rkanoid.sh` |
+
+> On WSL, sound needs `sudo apt install libpulse0`.
+
+The rest of this README is about building the game yourself.
+
+---
+
 ## Requirements
 
 - Docker installed and running: [Docker Desktop](https://www.docker.com/products/docker-desktop/) on Windows, or Docker Engine on Linux
@@ -37,6 +52,8 @@ dist\windows\
 ├── openal32.dll    ← required for audio, must stay next to the .exe
 └── data\           ← fonts, images and sounds
 ```
+
+On Linux you can build the Windows version too, with `./build-windows.sh`.
 
 ---
 
@@ -113,6 +130,30 @@ Then rebuild with `.\build-windows.cmd` (Windows) or `./build-linux.sh` (Linux).
 - Mouse-controlled paddle
 - 5×5 brick grid with random colour assignment per level
 - Collision detection between ball↔paddle and ball↔bricks
+
+---
+
+## Making a release
+
+Releases are created with one command from an up-to-date `master` with no uncommitted changes:
+
+```
+./release.sh
+```
+
+It reads the current version from the `VERSION` file and asks which kind of release this is:
+
+| Type | Example | Use it for |
+|------|---------|------------|
+| patch | 1.0.0 → 1.0.1 | bug fixes, small changes |
+| minor | 1.0.0 → 1.1.0 | new features |
+| major | 1.0.0 → 2.0.0 | big or incompatible changes |
+
+The script updates `VERSION`, commits it, creates the git tag (e.g. `v1.1.0`) and pushes both. The tag push starts the [Release workflow](.github/workflows/release.yml), which builds the Windows and Linux versions and publishes them on the Releases page after about 10–15 minutes.
+
+Use `./release.sh --dry-run` to see what would happen without changing anything.
+
+The version also appears in the game's window title (e.g. "F3RKANOID 1.1.0").
 
 ---
 
