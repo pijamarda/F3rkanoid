@@ -6,3 +6,7 @@ Debug/
 Release/
 out/
 bin/
+
+# Build output (rebuild with build-windows.cmd / build-linux.sh)
+dist/
+build/
