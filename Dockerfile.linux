@@ -1,0 +1,63 @@
+# Builds F3rkanoid for Linux (x86-64) inside Docker.
+# The output is a self-contained folder: binary + bundled shared libs + assets.
+#
+# Built on Ubuntu 22.04 (glibc 2.35), so the result runs on that and any newer
+# distro. Layer ordering mirrors Dockerfile.build: SFML is cached after the
+# first run.
+
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+        cmake make git g++ \
+        libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev \
+        libgl1-mesa-dev libfreetype-dev \
+        libopenal-dev libflac-dev libvorbis-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------------------------------------------------
+# Build SFML 2.6.1 as static libraries (same version as the Windows build).
+# ---------------------------------------------------------------------------
+RUN git clone --depth 1 --branch 2.6.1 https://github.com/SFML/SFML.git /sfml-src \
+    && cmake -B /sfml-build -S /sfml-src \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DSFML_BUILD_EXAMPLES=OFF \
+        -DSFML_BUILD_DOC=OFF \
+        -DSFML_BUILD_TEST_SUITE=OFF \
+        -DCMAKE_INSTALL_PREFIX=/sfml-linux \
+    && cmake --build /sfml-build -j$(nproc) \
+    && cmake --install /sfml-build \
+    && rm -rf /sfml-src /sfml-build
+
+# ---------------------------------------------------------------------------
+# Build the game
+# ---------------------------------------------------------------------------
+WORKDIR /workspace
+COPY . .
+
+RUN cmake -B build \
+        -DSFML_DIR=/sfml-linux/lib/cmake/SFML \
+        -DSFML_STATIC_LIBRARIES=TRUE \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++ -Wl,--disable-new-dtags" \
+        -DCMAKE_BUILD_RPATH='$ORIGIN/lib' \
+        # ^ old-style RPATH (not RUNPATH) so bundled libs also find each other
+    && cmake --build build
+
+# ---------------------------------------------------------------------------
+# Assemble distributable folder.
+# SFML itself is static, but it still links its third-party deps dynamically
+# (OpenAL, FreeType, FLAC, Vorbis...). Bundle those into lib/ so the user does
+# not need to install them. glibc, X11, OpenGL and udev are left to the host:
+# they are present on any desktop and must match the host's drivers.
+# ---------------------------------------------------------------------------
+RUN mkdir -p dist/lib \
+    && cp build/f3rkanoid dist/ \
+    && cp -r data dist/ \
+    && ldd build/f3rkanoid | awk '/=> \// {print $3}' \
+       | grep -vE '/(libc|libm|libdl|libpthread|librt|ld-linux[^/]*|libGL[^/]*|libGLX[^/]*|libGLdispatch|libOpenGL|libX[^/]*|libxcb[^/]*|libudev|libbsd|libmd)\.so' \
+       | xargs -r -I{} cp -L {} dist/lib/ \
+    && printf '#!/bin/sh\n# Run from this folder so the game finds data/\ncd "$(dirname "$0")" && exec ./f3rkanoid "$@"\n' > dist/f3rkanoid.sh \
+    && chmod +x dist/f3rkanoid.sh dist/f3rkanoid

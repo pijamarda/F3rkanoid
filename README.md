@@ -40,6 +40,32 @@ dist\windows\
 
 ---
 
+## Build for Linux
+
+From a terminal in the **project root**:
+
+```
+./build-linux.sh
+```
+
+Same idea as the Windows build: SFML 2.6.1 is compiled inside Docker on the first run (~5 min), then cached.
+
+Output is placed in `dist/linux/`:
+
+```
+dist/linux/
+├── f3rkanoid       ← the game binary
+├── f3rkanoid.sh    ← launcher (runs the game from the right folder)
+├── lib/            ← bundled audio/font libraries (OpenAL, FreeType, Vorbis, FLAC…)
+└── data/           ← fonts, images and sounds
+```
+
+Run it with `./dist/linux/f3rkanoid.sh`. The folder can be copied to any x86-64 distro as recent as Ubuntu 22.04 or newer; it only needs the usual desktop libraries (X11, OpenGL, PulseAudio/PipeWire).
+
+> On WSL, sound needs `sudo apt install libpulse0` (WSLg provides the audio server, but not the client library).
+
+---
+
 ## Run the game
 
 Double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
