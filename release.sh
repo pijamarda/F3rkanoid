@@ -82,6 +82,8 @@ echo ""
 echo "Current version: $CURRENT"
 echo ""
 PS3=$'\nChoose the release type: '
+# COLUMNS=1 makes select print one option per line instead of in columns.
+COLUMNS=1
 select _ in "${LABELS[@]}"; do
     [[ "$REPLY" =~ ^[0-9]+$ ]] && (( REPLY >= 1 && REPLY <= ${#LABELS[@]} )) && break
     echo "Invalid choice, type a number from the list."
