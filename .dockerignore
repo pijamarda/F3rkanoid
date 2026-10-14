@@ -3,4 +3,3 @@ bin/
 dist/
 build/
 *.o
-.vscode/

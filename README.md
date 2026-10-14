@@ -13,7 +13,7 @@ https://youtu.be/xNazb71JcUc
 
 ## Requirements
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+- Docker installed and running: [Docker Desktop](https://www.docker.com/products/docker-desktop/) on Windows, or Docker Engine on Linux
 
 That's it. No compiler, no SFML, no extra tooling needed on the host machine.
 
@@ -68,7 +68,9 @@ Run it with `./dist/linux/f3rkanoid.sh`. The folder can be copied to any x86-64 
 
 ## Run the game
 
-Double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
+**Linux:** `./dist/linux/f3rkanoid.sh`
+
+**Windows:** double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
 
 ```
 cd dist\windows
@@ -101,7 +103,7 @@ The game renders at a 2× scale by default (1200×960). To change it, edit the c
 const float SCALE = 2.0f;  // try 1.0, 1.5, 3.0 …
 ```
 
-Then rebuild with `.\build-windows.cmd`.
+Then rebuild with `.\build-windows.cmd` (Windows) or `./build-linux.sh` (Linux).
 
 ---
 
@@ -114,23 +116,6 @@ Then rebuild with `.\build-windows.cmd`.
 
 ---
 
-## DEPRECATED — old build instructions
+## Credits
 
-> The instructions below are kept for historical reference.
-> The project no longer requires a manual SFML installation or g++ on the host.
-
-**Requisites:**
-g++ - GNU C++ compiler >= version 4.7
-
-Para compilarlo en Linux es necesario tener descargada la libreria SFML (recomendada version 2.3)
-
-Link de descarga  
-http://sfml-dev.org/download/sfml/  
-Descomprimimos el contenido de la carpeta, por ejemplo en:  
-/home/zeneke/data/sdk/SFML-2.3/  
-Compilamos con g++ utilizando el flag para utilizar c++11  
-g++ -c -std=c++0x source/*.cpp   
-Linkamos con las librerias  
-g++ *.o -o sfml-app -L /home/zeneke/data/sdk/SFML-2.3/lib -lsfml-graphics -lsfml-window -lsfml-system  
-Y ejecutamos indicando manualmente donde estan los binarios de la libreria  
-export LD_LIBRARY_PATH=/home/zeneke/data/sdk/SFML-2.3/lib && ./sfml-app  
+Ball and paddle sprites by [Kenney](https://www.kenney.nl) (see `data/img/readme.txt`).

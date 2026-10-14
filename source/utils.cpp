@@ -44,7 +44,7 @@ bool testCollision(Bola &mBola, Nave &mNave)
 
 			if (mBola.anguloBola > 0 && mBola.anguloBola <= 180)
 			{
-				//dividimos las 180 partes por el tamaño de la nave
+				//dividimos las 180 partes por el tamaÃ±o de la nave
 				//en nuestro caso particular da alrededor de 0'73
 				float diferencial = 180.0f / mNave.naveAncho;
 
