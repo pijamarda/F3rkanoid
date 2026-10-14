@@ -52,7 +52,7 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigne
 				int random = (rand() % NUM_COLORES);
 
 				sf::Sprite spriteTemp;
-				//Este numero aleatorio selecciona la textura del vector de tamaño
+				//Este numero aleatorio selecciona la textura del vector de tamaÃ±o
 				//NUM_COLORES que hemos creado
 				spriteTemp.setTexture(tipoLadrillos[random]);
 
@@ -63,9 +63,9 @@ Brick::Brick(int nivel, unsigned int LVL_WIDTH, unsigned int LVL_HEIGHT, unsigne
 
 				//std::cout << anchoTemp << " " << altoTemp << " ";
 
-				//vamos a calcular el offset de los ladrillos basados en el tamaño del bloque
-				// y el tamaño del nivel
-				// deberia ser la diferencia entre el tamaño total del nivel menos el ancho 
+				//vamos a calcular el offset de los ladrillos basados en el tamaÃ±o del bloque
+				// y el tamaÃ±o del nivel
+				// deberia ser la diferencia entre el tamaÃ±o total del nivel menos el ancho 
 				//de todos los ladrillos y el resultado partido por 2
 
 				float offsetX = ((LVL_WIDTH - (ANCHO * anchoTemp)) / 2.0f) + PARED_WIDTH;

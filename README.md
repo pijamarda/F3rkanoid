@@ -13,7 +13,7 @@ https://youtu.be/xNazb71JcUc
 
 ## Requirements
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+- Docker installed and running: [Docker Desktop](https://www.docker.com/products/docker-desktop/) on Windows, or Docker Engine on Linux
 
 That's it. No compiler, no SFML, no extra tooling needed on the host machine.
 
@@ -68,7 +68,9 @@ Run it with `./dist/linux/f3rkanoid.sh`. The folder can be copied to any x86-64 
 
 ## Run the game
 
-Double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
+**Linux:** `./dist/linux/f3rkanoid.sh`
+
+**Windows:** double-click `dist\windows\f3rkanoid.exe`, **or** from a terminal:
 
 ```
 cd dist\windows
@@ -101,7 +103,7 @@ The game renders at a 2× scale by default (1200×960). To change it, edit the c
 const float SCALE = 2.0f;  // try 1.0, 1.5, 3.0 …
 ```
 
-Then rebuild with `.\build-windows.cmd`.
+Then rebuild with `.\build-windows.cmd` (Windows) or `./build-linux.sh` (Linux).
 
 ---
 
@@ -111,6 +113,12 @@ Then rebuild with `.\build-windows.cmd`.
 - Mouse-controlled paddle
 - 5×5 brick grid with random colour assignment per level
 - Collision detection between ball↔paddle and ball↔bricks
+
+---
+
+## Credits
+
+Ball and paddle sprites by [Kenney](https://www.kenney.nl) (see `data/img/readme.txt`).
 
 ---
 
